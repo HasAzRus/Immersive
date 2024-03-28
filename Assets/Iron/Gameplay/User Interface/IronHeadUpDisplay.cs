@@ -66,13 +66,13 @@ namespace Iron
 
         private void OnHealthChanged(float value)
         {
-            _healthBarImage.fillAmount = MathF.Round(value / _ironPlayer.GetMaxHealth(), 2);
+            _healthBarImage.fillAmount = MathF.Round(value / _ironPlayer.MaxHealth, 2);
             _healthBarImage.color = value > _healthMinValue ? Color.white : Color.red;
         }
         
         private void OnStaminaChanged(float value)
         {
-            _staminaBarImage.fillAmount = MathF.Round(value / _ironPlayer.GetMaxStamina(), 2);
+            _staminaBarImage.fillAmount = MathF.Round(value / _ironPlayer.MaxStamina, 2);
             _staminaBarImage.color = value > _staminaMinValue ? Color.white : Color.red;
         }
         

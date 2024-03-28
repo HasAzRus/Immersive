@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Oxygen
 {
-	public class Mover : Behaviour
+	public sealed class Mover : Behaviour
 	{
 		public event Action Moved;
 		public event Action Reversed;

@@ -2,7 +2,7 @@
 
 namespace Oxygen
 {
-	public class PlayerStart : Behaviour
+	public sealed class PlayerStart : Behaviour
 	{
 		private void OnDrawGizmos()
 		{

@@ -21,20 +21,13 @@ namespace Oxygen
 
 		[SerializeField] private float _fireSpeed;
 
-		private Transform _ownerTransform;
-
-		private bool _isCooldown;
 		private float _cooldownTime;
 
-		private bool _isSelected;
-
-		private GameObject _owner;
-		
 		public void Construct(GameObject owner)
 		{
 			OnConstruct(owner);
 			
-			_owner = owner;
+			Owner = owner;
 		}
 
 		protected abstract bool OnFire(int mode);
@@ -63,19 +56,12 @@ namespace Oxygen
 		{
 
 		}
-
-		protected override void Start()
-		{
-			base.Start();
-
-			_ownerTransform = _owner.transform;
-		}
-
+		
 		protected override void Update()
 		{
 			base.Update();
 
-			if (_isCooldown)
+			if (IsCooldown)
 			{
 				if (_cooldownTime < _maxCooldownTime)
 				{
@@ -84,7 +70,7 @@ namespace Oxygen
 				else
 				{
 					_cooldownTime = 0f;
-					_isCooldown = false;
+					IsCooldown = false;
 
 					Cooldowned?.Invoke();
 				}
@@ -95,14 +81,9 @@ namespace Oxygen
 
 		protected void StartCooldown()
 		{
-			_isCooldown = true;
+			IsCooldown = true;
 
 			Cooldowning?.Invoke();
-		}
-
-		protected bool CheckCooldown()
-		{
-			return _isCooldown;
 		}
 
 		public bool Fire(int mode)
@@ -117,14 +98,14 @@ namespace Oxygen
 
 		public void Select()
 		{
-			_isSelected = true;
+			IsSelected = true;
 
 			OnSelect();
 		}
 
 		public void Deselect()
 		{
-			_isSelected = false;
+			IsSelected = false;
 
 			OnDeselect();
 		}
@@ -134,11 +115,6 @@ namespace Oxygen
 			OnClear();
 		}
 
-		public bool CheckActive()
-		{
-			return _isActive;
-		}
-		
 		public void SetActive(bool value)
 		{
 			_isActive = value;
@@ -149,29 +125,16 @@ namespace Oxygen
 			_fireSpeed = value;
 		}
 
-		public bool CheckSelected()
-		{
-			return _isSelected;
-		}
+		protected bool IsCooldown { get; private set; }
 
-		public float GetDamage()
-		{
-			return _damage;
-		}
+		public bool IsActive => _isActive;
 
-		public string GetName()
-		{
-			return _name;
-		}
+		public bool IsSelected { get; private set; }
 
-		public GameObject GetOwner()
-		{
-			return _owner;
-		}
-		
-		public Transform GetOwnerTransform()
-		{
-			return _ownerTransform;
-		}
+		public float Damage => _damage;
+
+		public string Name => _name;
+
+		public GameObject Owner { get; private set; }
 	}
 }

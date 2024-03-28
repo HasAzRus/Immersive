@@ -5,23 +5,17 @@ namespace Oxygen
 {
 	public class WeaponManager : Behaviour
 	{
-		public event Action<int> WeaponChanged;
+		public event Action<BaseWeapon> WeaponChanged;
 
 		[SerializeField] private BaseWeapon[] _weapons;
-
-		private BaseWeapon _currentWeapon;
-		private int _currentWeaponIndex;
 
 		private GameObject _owner;
 		
 		public void Construct(GameObject owner)
 		{
 			_owner = owner;
-		}
-
-		public void Initialize()
-		{
-			_currentWeaponIndex = -1;
+			
+			CurrentWeaponIndex = -1;
 
 			foreach (var weapon in _weapons)
 			{
@@ -31,34 +25,48 @@ namespace Oxygen
 
 		public bool ChangeWeapon(int index)
 		{
-			if(_currentWeapon != null)
-			{
-				_currentWeapon.Deselect();
-			}
-
-			if(index < 0)
-			{
-				_currentWeapon = null;
-				_currentWeaponIndex = -1;
-
-				WeaponChanged?.Invoke(-1);
-				
-				return true;
-			}
-
 			var weapon = _weapons[index];
 
-			if(!weapon.CheckActive())
+			if(!weapon.IsActive)
+			{
+				Debug.Log($"Оружие ({weapon.Name}) недоступно");
+				
+				return false;
+			}
+			
+			if(CurrentWeapon != null)
+			{
+				if (CurrentWeapon == weapon)
+				{
+					Debug.Log($"Оружие ({weapon.Name}) уже выбрано");
+					
+					return false;
+				}
+				
+				CurrentWeapon.Deselect();
+			}
+			
+			weapon.Select();
+
+			CurrentWeapon = weapon;
+			CurrentWeaponIndex = index;
+
+			WeaponChanged?.Invoke(CurrentWeapon);
+
+			return true;
+		}
+
+		public bool DeselectCurrentWeapon()
+		{
+			if (CurrentWeapon == null)
 			{
 				return false;
 			}
+			
+			CurrentWeapon.Deselect();
 
-			weapon.Select();
-
-			_currentWeapon = weapon;
-			_currentWeaponIndex = index;
-
-			WeaponChanged?.Invoke(index);
+			CurrentWeapon = null;
+			CurrentWeaponIndex = -1;
 
 			return true;
 		}
@@ -67,25 +75,8 @@ namespace Oxygen
 		{
 			_weapons[index].SetActive(value);
 		}
-
-		public BaseWeapon GetWeapon(int index) 
-		{
-			return _weapons[index];
-		}
-
-		public BaseWeapon[] GetWeapons()
-		{
-			return _weapons;
-		}
-
-		public BaseWeapon GetCurrentWeapon()
-		{
-			return _currentWeapon;
-		}
-
-		public int GetCurrentWeaponIndex()
-		{
-			return _currentWeaponIndex;
-		}
+		
+		public BaseWeapon CurrentWeapon { get; private set; }
+		public int CurrentWeaponIndex { get; private set; }
 	}
 }

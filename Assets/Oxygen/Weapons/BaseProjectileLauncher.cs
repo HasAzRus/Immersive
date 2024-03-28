@@ -24,7 +24,7 @@ namespace Oxygen
 
 		private void Launch(BaseProjectile projectile, Vector3 direction)
 		{
-			projectile.Construct(GetOwner(), GetDamage() * GetDamageMultiplier());
+			projectile.Construct(Owner, Damage * DamageMultiplier);
 			projectile.Launch(_speed * direction);
 		}
 		
@@ -59,11 +59,11 @@ namespace Oxygen
 		{
 			base.OnShoot();
 
-			var traceTransform = GetTrunkTransform();
+			var traceTransform = Trunk;
 
-			if (CheckAllowOwnerDirection())
+			if (AllowOwnerDirection)
 			{
-				traceTransform = GetOwnerTransform();
+				traceTransform = Owner.transform;
 			}
 			
 			var position = traceTransform.position;

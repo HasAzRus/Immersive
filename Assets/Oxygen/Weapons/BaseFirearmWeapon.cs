@@ -91,13 +91,11 @@ namespace Oxygen
 		[SerializeField] private bool _allowOwnerDirection;
 		[SerializeField] private Transform _trunkTransform;
 
-		private int _ammo;
-
 		private bool _isFiring;
 
 		private void SetAmmo(int value)
 		{
-			_ammo = value;
+			Ammo = value;
 
 			AmmoChanged?.Invoke(value);
 		}
@@ -148,17 +146,17 @@ namespace Oxygen
 
 			_muzzleFlash.Update();
 
-			if (!CheckActive())
+			if (!IsActive)
 			{
 				return;
 			}
 
-			if (!CheckSelected())
+			if (!IsSelected)
 			{
 				return;
 			}
 
-			if (CheckCooldown())
+			if (IsCooldown)
 			{
 				return;
 			}
@@ -181,20 +179,13 @@ namespace Oxygen
 			Shoot();
 		}
 
-		protected override void OnClear()
-		{
-			base.OnClear();
-
-			SetAmmo(0);
-		}
-
 		protected override bool OnFire(int mode)
 		{
 			switch (mode)
 			{
 				case 0:
 				{
-					if (_ammo == 0)
+					if (Ammo == 0)
 					{
 						if (!_isInfinity)
 						{
@@ -202,7 +193,7 @@ namespace Oxygen
 						}
 					}
 
-					if (CheckCooldown())
+					if (IsCooldown)
 					{
 						return false;
 					}
@@ -257,9 +248,9 @@ namespace Oxygen
 
 		protected void ConsumeAmmo(int amount)
 		{
-			if (_ammo - amount > 0)
+			if (Ammo - amount > 0)
 			{
-				SetAmmo(_ammo - amount);
+				SetAmmo(Ammo - amount);
 			}
 			else
 			{
@@ -269,34 +260,24 @@ namespace Oxygen
 			}
 		}
 
-		protected bool CheckAllowOwnerDirection()
-		{
-			return _allowOwnerDirection;
-		}
-
-		protected Transform GetTrunkTransform()
-		{
-			return _trunkTransform;
-		}
-
 		public int Reload(int ammo)
 		{
-			if (_ammo == _maxAmmo)
+			if (Ammo == _maxAmmo)
 			{
 				return 0;
 			}
 
-			var amount = _maxAmmo - _ammo;
+			var amount = _maxAmmo - Ammo;
 
 			if (amount < ammo)
 			{
-				SetAmmo(_ammo + amount);
+				SetAmmo(Ammo + amount);
 
 				return amount;
 			}
 			else
 			{
-				SetAmmo(_ammo + ammo);
+				SetAmmo(Ammo + ammo);
 
 				return ammo;
 			}
@@ -307,19 +288,14 @@ namespace Oxygen
 			_maxAmmo = value;
 		}
 
-		public int GetAmmo()
-		{
-			return _ammo;
-		}
+		public bool AllowOwnerDirection => _allowOwnerDirection;
 
-		public int GetMaxAmmo()
-		{
-			return _maxAmmo;
-		}
+		public Transform Trunk => _trunkTransform;
 
-		public float GetDamageMultiplier()
-		{
-			return _damageMultiplier;
-		}
+		public int Ammo { get; private set; }
+		
+		public int MaxAmmo => _maxAmmo;
+		
+		public float DamageMultiplier => _damageMultiplier;
 	}
 }

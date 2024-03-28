@@ -33,9 +33,9 @@ namespace Oxygen
 				return false;
 			}
 
-			var damage = GetDamage() * damageMultiplier;
+			var damage = Damage * damageMultiplier;
 
-			receiver.ApplyDamage(GetOwner(), damage);
+			receiver.ApplyDamage(Owner, damage);
 
 			Damaged?.Invoke(hit.collider.gameObject, damage);
 			OnDamaged(hit.collider.gameObject, damage);
@@ -60,11 +60,11 @@ namespace Oxygen
 
 		protected bool Trace(float damageMultiplier)
 		{
-			var traceTransform = GetTrunkTransform();
+			var traceTransform = Trunk;
 			
-			if (CheckAllowOwnerDirection())
+			if (AllowOwnerDirection)
 			{
-				traceTransform = GetOwnerTransform();
+				traceTransform = Owner.transform;
 			}
 
 			if(_allowMultiplier)
@@ -110,7 +110,7 @@ namespace Oxygen
 		{
 			base.OnShoot();
 
-			Trace(GetDamageMultiplier());
+			Trace(DamageMultiplier);
 		}
 	}
 }

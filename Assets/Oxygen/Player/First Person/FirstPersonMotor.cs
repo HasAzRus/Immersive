@@ -141,11 +141,6 @@ namespace Oxygen
             return _mode;
         }
 
-        public void SetSpeed(float value)
-        {
-            _speed = value;
-        }
-
         public float GetSpeed()
         {
             return _speed * CalculateSpeedMultiplier();
@@ -166,17 +161,12 @@ namespace Oxygen
             _inputDirection.x = value;
         }
 
-        public Vector3 GetVelocity2d()
+        public Vector3 GetVelocity2D()
         {
             var velocity = _moveDirection;
             velocity.y = 0f;
             
             return velocity;
-        }
-
-        public Vector3 GetVelocity()
-        {
-            return _moveDirection;
         }
 
         public Transform GetTransform()

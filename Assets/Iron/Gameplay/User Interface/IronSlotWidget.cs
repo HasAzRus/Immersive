@@ -138,8 +138,8 @@ namespace Iron
             }
 
             _ironInventory.SetDraggingSlot(this);
-
-            Debug.Log("Начало перетаскивания");
+            
+            _countText.CrossFadeAlpha(0f, 0.2f, true);
         }
 
         public void OnEndDrag(PointerEventData eventData)
@@ -165,7 +165,7 @@ namespace Iron
 
             _iconTransform.localPosition = Vector3.zero;
             
-            Debug.Log("Завершение перетаскивания");
+            _countText.CrossFadeAlpha(1f, 0.2f, true);
         }
 
         public void OnDrag(PointerEventData eventData)

@@ -1,6 +1,5 @@
 ﻿using System;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Oxygen
 {
@@ -20,8 +19,6 @@ namespace Oxygen
 		
 		[SerializeField] private bool _allowDamageReceive;
 
-		private float _health;
-
 		protected override void Start()
 		{
 			base.Start();
@@ -34,7 +31,7 @@ namespace Oxygen
 
 		private void SetHealth(float value)
 		{
-			_health = value;
+			Health = value;
 
 			HealthChanged?.Invoke(value);
 		}
@@ -46,7 +43,7 @@ namespace Oxygen
 				return;
 			}
 			
-			var value = _health - damage;
+			var value = Health - damage;
 
 			if (value > 0f)
 			{
@@ -95,15 +92,8 @@ namespace Oxygen
 			{
 				throw new ArgumentOutOfRangeException();
 			}
-			
-			if (amount > _maxHealth)
-			{
-				SetHealth(_maxHealth);
 
-				return;
-			}
-			
-			SetHealth(amount);
+			SetHealth(Mathf.Clamp(amount, 1, _maxHealth));
 		}
 
 		public void AddHealth(float amount)
@@ -113,19 +103,9 @@ namespace Oxygen
 				throw new ArgumentOutOfRangeException();
 			}
 			
-			var value = _health + amount;
+			var value = Health + amount;
 			
 			ApplyHealth(value);
-		}
-
-		public float GetMaxHealth()
-		{
-			return _maxHealth;
-		}
-
-		public float GetHealth()
-		{
-			return _health;
 		}
 
 		public void SetAllowDamageReceive(bool value)
@@ -134,5 +114,7 @@ namespace Oxygen
 		}
 
 		public bool IsDead { get; private set; }
+		public float MaxHealth => _maxHealth;
+		public float Health { get; private set; }
 	}
 }

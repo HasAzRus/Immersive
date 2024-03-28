@@ -2,7 +2,7 @@
 
 namespace Oxygen
 {
-    public class Message : Behaviour
+    public sealed class Message : Behaviour
     {
         public void Print(string text)
         {

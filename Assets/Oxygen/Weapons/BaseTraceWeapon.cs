@@ -15,7 +15,7 @@ namespace Oxygen
 
 		protected bool Trace(float damageMultiplier)
 		{
-			var traceTransform = GetOwnerTransform();
+			var traceTransform = Owner.transform;
 			
 			if (!Physics.Raycast(traceTransform.position, traceTransform.forward, out RaycastHit hit,
 				    _maxDistance))
@@ -30,7 +30,7 @@ namespace Oxygen
 				return false;
 			}
 
-			receiver.ApplyDamage(traceTransform.gameObject, GetDamage() * damageMultiplier);
+			receiver.ApplyDamage(traceTransform.gameObject, Damage * damageMultiplier);
 
 			return true;
 		}

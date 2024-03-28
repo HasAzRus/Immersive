@@ -51,7 +51,41 @@ namespace Iron
         private PlayerBob _bob;
 
         private Transform _transform;
+        
+        
+        protected override void OnInitializeComponent()
+        {
+            base.OnInitializeComponent();
 
+            _inventory = GetComponent<IronPlayerInventory>();
+            _bob = GetComponent<PlayerBob>();
+
+            _transform = transform;
+            
+            _inventory.Construct(this);
+            
+            if (GetMotor() is not IronPlayerMotor ironPlayerMotor)
+            {
+                return;
+            }
+            
+            ironPlayerMotor.Crouched += OnCrouched;
+            ironPlayerMotor.Uncrouched += OnUncrouched;
+            
+            ironPlayerMotor.Jumping += OnJumping;
+            
+            ironPlayerMotor.Fallen += OnFallen;
+            
+            _ironCamera = GetCamera() as IronPlayerCamera;
+        }
+
+        protected override void OnGameBeginned()
+        {
+            base.OnGameBeginned();
+            
+            SetMode(PlayerMode.None);
+        }
+        
         private void OnModeChanged(PlayerMode value)
         {
             GetInput().SetMode(value == PlayerMode.Inventory ? InputMode.UI : InputMode.Game);
@@ -94,39 +128,6 @@ namespace Iron
             }
             
             ApplyDamage(gameObject, (height - _deadlyHeight) * _fallenDamageAmount);
-        }
-        
-        protected override void OnInitializeComponent()
-        {
-            base.OnInitializeComponent();
-
-            _inventory = GetComponent<IronPlayerInventory>();
-            _bob = GetComponent<PlayerBob>();
-
-            _transform = transform;
-            
-            _inventory.Construct(this);
-            
-            if (GetMotor() is not IronPlayerMotor ironPlayerMotor)
-            {
-                return;
-            }
-            
-            ironPlayerMotor.Crouched += OnCrouched;
-            ironPlayerMotor.Uncrouched += OnUncrouched;
-            
-            ironPlayerMotor.Jumping += OnJumping;
-            
-            ironPlayerMotor.Fallen += OnFallen;
-            
-            _ironCamera = GetCamera() as IronPlayerCamera;
-        }
-
-        protected override void OnGameBeginned()
-        {
-            base.OnGameBeginned();
-            
-            SetMode(PlayerMode.None);
         }
 
         protected override void OnDamageApplied(GameObject caller, float damage)
@@ -237,7 +238,7 @@ namespace Iron
                 return;
             }
 
-            if (ironPlayerMotor.GetVelocity2d().magnitude > 0.02f)
+            if (ironPlayerMotor.GetVelocity2D().magnitude > 0.02f)
             {
                 _bob.Bob(ironPlayerMotor.GetDirection());
             }
@@ -319,14 +320,11 @@ namespace Iron
             return _isStaminaEnough;
         }
 
-        public float GetMaxStamina()
-        {
-            return _maxStamina;
-        }
-
         public BaseTimeGrabInteractive GetTimeGrabInteractive()
         {
             return _timeGrabInteractive;
         }
+
+        public float MaxStamina => _maxStamina;
     }
 }

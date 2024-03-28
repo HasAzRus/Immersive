@@ -10,8 +10,8 @@ namespace Oxygen
         Both
     }
     
-    [RequireComponent(typeof(BoxCollider))]
-    public class TouchTrigger : Behaviour
+    [RequireComponent(typeof(TouchTriggerEventListener))]
+    public sealed class TouchTrigger : BaseTouchTrigger
     {
         public event Action<Player> Triggered;
         public event Action<Player> Untriggered;
@@ -19,17 +19,9 @@ namespace Oxygen
         [SerializeField] private TouchTriggerMode _mode;
         [SerializeField] private bool _onlyOnce;
 
-        private void OnDrawGizmos()
-        {
-            Gizmos.matrix = transform.localToWorldMatrix;
-            Gizmos.color = Preferences.TouchTriggerColor;
-            Gizmos.DrawCube(Vector3.zero, Vector3.one);
-        }
 
-        protected override void OnTriggerEnter(Collider other)
+        protected override void OnTriggered(Player player)
         {
-            base.OnTriggerEnter(other);
-
             var checkOnlyOnce = true;
 
             if (_mode != TouchTriggerMode.Enter)
@@ -42,13 +34,8 @@ namespace Oxygen
                 checkOnlyOnce = false;
             }
             
-            if (!other.TryGetComponent(out Player player))
-            {
-                return;
-            }
-            
             Triggered?.Invoke(player);
-
+            
             if (!checkOnlyOnce)
             {
                 return;
@@ -60,21 +47,16 @@ namespace Oxygen
             }
         }
 
-        protected override void OnTriggerExit(Collider other)
+        protected override void OnUntriggered(Player player)
         {
-            base.OnTriggerExit(other);
-
+            base.OnUntriggered(player);
+            
             if (_mode != TouchTriggerMode.Exit)
             {
                 if (_mode != TouchTriggerMode.Both)
                 {
                     return;
                 }
-            }
-            
-            if (!other.TryGetComponent(out Player player))
-            {
-                return;
             }
             
             Untriggered?.Invoke(player);
