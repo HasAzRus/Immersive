@@ -2,7 +2,7 @@
 
 namespace Oxygen
 {
-    public class UserInterfacePage : UserInterfaceGameObject
+    public class PageWidget : Widget
     {
         [SerializeField] private GameObject _baseGameObject;
 

@@ -1,6 +1,6 @@
 ﻿namespace Oxygen
 {
-    public class UserInterfaceGameObject : Behaviour
+    public class Widget : Behaviour
     {
         private void SetActive(bool value)
         {

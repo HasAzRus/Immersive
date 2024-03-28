@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Oxygen
 {
-    public class SlotDrawer : Behaviour, IItem
+    public class SlotWidget : Behaviour, IItem
     {
         public string Name { get; private set; }
         public int Count { get; private set; }
@@ -13,16 +13,16 @@ namespace Oxygen
 
         private bool _isLocked;
 
-        private InventoryUserInterface _inventoryUserInterface;
+        private Inventory _inventory;
         
-        public void Construct(InventoryUserInterface inventoryUserInterface)
+        public void Construct(Inventory inventory)
         {
-            OnConstruct(inventoryUserInterface);
+            OnConstruct(inventory);
             
-            _inventoryUserInterface = inventoryUserInterface;
+            _inventory = inventory;
         }
 
-        protected virtual void OnConstruct(InventoryUserInterface inventoryUserInterface)
+        protected virtual void OnConstruct(Inventory inventory)
         {
             
         }
@@ -144,9 +144,9 @@ namespace Oxygen
             return _isLocked;
         }
 
-        public InventoryUserInterface GetInventory()
+        public Inventory GetInventory()
         {
-            return _inventoryUserInterface;
+            return _inventory;
         }
     }
 }

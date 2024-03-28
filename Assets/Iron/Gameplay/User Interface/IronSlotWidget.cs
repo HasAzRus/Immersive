@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace Iron
 {
-    public class IronSlotDrawer : SlotDrawer,
+    public class IronSlotWidget : SlotWidget,
         IBeginDragHandler,
         IEndDragHandler,
         IDragHandler,
@@ -25,13 +25,13 @@ namespace Iron
         
         private Transform _iconTransform;
 
-        private IronInventoryUserInterface _ironInventory;
+        private IronInventory _ironInventory;
         
-        protected override void OnConstruct(InventoryUserInterface inventoryUserInterface)
+        protected override void OnConstruct(Inventory inventory)
         {
-            base.OnConstruct(inventoryUserInterface);
+            base.OnConstruct(inventory);
             
-            _ironInventory = inventoryUserInterface as IronInventoryUserInterface;
+            _ironInventory = inventory as IronInventory;
         }
 
         private void OnSelectionChanged(bool value)

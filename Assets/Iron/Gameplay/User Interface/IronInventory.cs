@@ -5,15 +5,15 @@ using UnityEngine.UI;
 
 namespace Iron
 {
-    public class IronInventoryUserInterface : InventoryUserInterface
+    public class IronInventory : Inventory
     {
         [SerializeField] private GameObject _panelGameObject;
         
         [SerializeField] private Text _itemText;
         [FormerlySerializedAs("_itemIconDatabase")] [SerializeField] private SpriteDatabase spriteDatabase;
         
-        private SlotDrawer _selectedSlotDrawer;
-        private SlotDrawer _draggingSlotDrawer;
+        private SlotWidget _selectedSlotWidget;
+        private SlotWidget _draggingSlotWidget;
 
         private void UpdateDisplayItem(IItem item)
         {
@@ -22,7 +22,7 @@ namespace Iron
 
         private void OnSelectedSlotChanged(IItem value)
         {
-            if (_draggingSlotDrawer != null)
+            if (_draggingSlotWidget != null)
             {
                 return;
             }
@@ -35,16 +35,16 @@ namespace Iron
             UpdateDisplayItem(value);
         }
 
-        public void SetSelectedSlot(SlotDrawer value)
+        public void SetSelectedSlot(SlotWidget value)
         {
-            _selectedSlotDrawer = value;
+            _selectedSlotWidget = value;
             
             OnSelectedSlotChanged(value);
         }
 
-        public void SetDraggingSlot(SlotDrawer value)
+        public void SetDraggingSlot(SlotWidget value)
         {
-            _draggingSlotDrawer = value;
+            _draggingSlotWidget = value;
             
             OnDraggingSlotChanged(value);
         }
@@ -77,9 +77,9 @@ namespace Iron
             }
         }
 
-        public SlotDrawer GetSelectedSlot()
+        public SlotWidget GetSelectedSlot()
         {
-            return _selectedSlotDrawer;
+            return _selectedSlotWidget;
         }
 
         public SpriteDatabase GetItemIconDatabase()

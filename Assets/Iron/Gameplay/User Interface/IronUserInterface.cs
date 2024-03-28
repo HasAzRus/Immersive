@@ -5,7 +5,7 @@ namespace Iron
 {
     public class IronUserInterface : UserInterface
     {
-        [SerializeField] private IronInventoryUserInterface _inventory;
+        [SerializeField] private IronInventory _inventory;
 
         private void OnInventoryClosed()
         {

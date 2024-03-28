@@ -2,9 +2,9 @@
 
 namespace Oxygen
 {
-    public class InventoryUserInterface : UserInterfacePage
+    public class Inventory : PageWidget
     {
-        [SerializeField] private SlotDrawer[] _drawerSlots;
+        [SerializeField] private SlotWidget[] _drawerSlots;
 
         private PlayerInventory _inventory;
         
@@ -69,7 +69,7 @@ namespace Oxygen
 
         private void Place(string name, int count)
         {
-            SlotDrawer firstFreeSlot = null;
+            SlotWidget firstFreeSlot = null;
             
             foreach (var drawerSlot in _drawerSlots)
             {

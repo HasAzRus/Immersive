@@ -1,6 +1,6 @@
 ﻿namespace Oxygen
 {
-    public class HeadUpDisplay : UserInterfacePage
+    public class HeadUpDisplay : PageWidget
     {
         public void Construct(Player player)
         {
