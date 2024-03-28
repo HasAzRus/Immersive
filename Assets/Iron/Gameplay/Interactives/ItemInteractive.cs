@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Iron
 {
-    public abstract class Item : ScriptableObject
+    public abstract class ItemInteractive : ScriptableObject
     {
         [SerializeField] private string _name;
 
@@ -18,7 +18,7 @@ namespace Iron
             
             if (OnInteract(ironPlayer))
             {
-                ironPlayer.GetInventory().Remove(_name, 1);
+                ironPlayer.Inventory.Remove(_name, 1);
             }
 
             return false;

@@ -7,9 +7,6 @@ namespace Oxygen
         [SerializeField] private Camera _camera;
 
         private Camera _toggledCamera;
-        
-        private Transform _cameraTransform;
-        private Transform _transform;
 
         protected virtual void OnClear()
         {
@@ -20,8 +17,8 @@ namespace Oxygen
         {
             base.Start();
             
-            _transform = transform;
-            _cameraTransform = _camera.transform;
+            Transform = transform;
+            CameraTransform = _camera.transform;
         }
 
         public void ToggleTo(Camera camera)
@@ -45,19 +42,8 @@ namespace Oxygen
             OnClear();
         }
 
-        public Camera GetCamera()
-        {
-            return _camera;
-        }
-
-        public Transform GetCameraTransform()
-        {
-            return _cameraTransform;
-        }
-
-        public Transform GetTransform()
-        {
-            return _transform;
-        }
+        public Camera Camera => _camera;
+        public Transform CameraTransform { get; private set; }
+        public Transform Transform { get; private set; }
     }
 }

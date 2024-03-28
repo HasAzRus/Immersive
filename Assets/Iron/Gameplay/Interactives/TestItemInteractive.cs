@@ -3,7 +3,7 @@
 namespace Iron
 {
     [CreateAssetMenu(fileName = "New Test Item", menuName = "Iron/Items/Test Item")]
-    public class TestItem : Item
+    public class TestItemInteractive : ItemInteractive
     {
         protected override bool OnInteract(IronPlayer ironPlayer)
         {

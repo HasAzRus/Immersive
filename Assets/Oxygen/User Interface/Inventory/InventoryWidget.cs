@@ -2,7 +2,7 @@
 
 namespace Oxygen
 {
-    public class Inventory : PageWidget
+    public class InventoryWidget : PageWidget
     {
         [SerializeField] private SlotWidget[] _drawerSlots;
 

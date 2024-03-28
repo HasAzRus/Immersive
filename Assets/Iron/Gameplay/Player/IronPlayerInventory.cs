@@ -9,7 +9,7 @@ namespace Iron
         [SerializeField] private Transform _dropTransform;
         
         [SerializeField] private ItemDropDatabase _itemDropDatabase;
-        [SerializeField] private ItemInteractionDatabase _itemInteractionDatabase;
+        [SerializeField] private ItemInteractiveDatabase itemInteractiveDatabase;
 
         private IronPlayer _ironPlayer;
 
@@ -40,7 +40,7 @@ namespace Iron
 
         public bool Interact(string name)
         {
-            if (!_itemInteractionDatabase.TryGetValue(name, out var itemInteractive))
+            if (!itemInteractiveDatabase.TryGetValue(name, out var itemInteractive))
             {
                 return false;
             }

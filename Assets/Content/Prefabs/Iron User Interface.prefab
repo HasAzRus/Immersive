@@ -1536,7 +1536,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _headUpDisplay: {fileID: 3305178656443281973}
-  _inventory: {fileID: 1220728350365798031}
+  inventoryWidget: {fileID: 1220728350365798031}
 --- !u!1 &2479985273162620114
 GameObject:
   m_ObjectHideFlags: 0

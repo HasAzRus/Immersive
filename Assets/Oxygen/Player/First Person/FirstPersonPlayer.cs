@@ -9,24 +9,19 @@ namespace Oxygen
     public class FirstPersonPlayer : Player
     {
         public event Action Interacting;
-        public event Action InteractionStopped; 
-
-        private FirstPersonMotor _motor;
-
-        private PlayerInteraction _interaction;
-        private PlayerPointer _pointer;
+        public event Action InteractionStopped;
 
         protected override void OnGameBeginned()
         {
             base.OnGameBeginned();
             
-            GetInput().SetEnabled(true);
-            GetInput().SetMode(InputMode.Game);
+            Input.SetEnabled(true);
+            Input.SetMode(InputMode.Game);
 
-            GetInteraction().IsEnabled = true;
-            GetPointer().SetEnabled(true);
+            Interaction.IsEnabled = true;
+            Pointer.SetEnabled(true);
 
-            if (GetCamera() is not FirstPersonCamera firstPersonCamera)
+            if (Camera is not FirstPersonCamera firstPersonCamera)
             {
                 return;
             }
@@ -38,12 +33,11 @@ namespace Oxygen
         {
             base.OnInitializeComponent();
             
-            _motor = GetComponent<FirstPersonMotor>();
-
-            _interaction = GetComponent<PlayerInteraction>();
-            _pointer = GetComponent<PlayerPointer>();
+            Motor = GetComponent<FirstPersonMotor>();
+            Interaction = GetComponent<PlayerInteraction>();
+            Pointer = GetComponent<PlayerPointer>();
             
-            _pointer.Construct(this);
+            Pointer.Construct(this);
         }
 
         protected virtual void OnInteracting()
@@ -60,21 +54,21 @@ namespace Oxygen
         {
             base.OnDisable();
 
-            _pointer.TryClear();
+            Pointer.TryClear();
         }
 
         public bool TryInteract()
         {
-            if (!_interaction.TryInteract(this))
+            if (!Interaction.TryInteract(this))
             {
                 return false;
             }
 
-            if (_interaction.CurrentInteractive is BaseConstraintGrabInteractive constraintGrabInteractive)
+            if (Interaction.CurrentInteractive is BaseConstraintGrabInteractive constraintGrabInteractive)
             {
-                if (GetInput() is FirstPersonInput firstPersonInput)
+                if (Input is FirstPersonInput firstPersonInput)
                 {
-                    firstPersonInput.SetConstraint(constraintGrabInteractive.Constraint);
+                    firstPersonInput.Constraint = constraintGrabInteractive.Constraint;
                 }
             }
 
@@ -86,14 +80,14 @@ namespace Oxygen
 
         public bool TryStopInteraction()
         {
-            if (!_interaction.TryStopInteraction(this))
+            if (!Interaction.TryStopInteraction(this))
             {
                 return false;
             }
             
-            if (GetInput() is FirstPersonInput firstPersonInput)
+            if (Input is FirstPersonInput firstPersonInput)
             {
-                firstPersonInput.SetConstraint(FirstPersonInputConstraint.None);
+                firstPersonInput.Constraint = FirstPersonInputConstraint.None;
             }
             
             OnInteractionStopped();
@@ -104,17 +98,17 @@ namespace Oxygen
 
         public void MoveForward(float value)
         {
-            _motor.MoveForward(value);
+            Motor.MoveForward(value);
         }
 
         public void MoveRight(float value)
         {
-            _motor.MoveRight(value);
+            Motor.MoveRight(value);
         }
 
         public void LookAt(float value)
         {
-            if (GetCamera() is not FirstPersonCamera firstPersonCamera)
+            if (Camera is not FirstPersonCamera firstPersonCamera)
             {
                 return;
             }
@@ -124,7 +118,7 @@ namespace Oxygen
 
         public void Turn(float value)
         {
-            if (GetCamera() is not FirstPersonCamera firstPersonCamera)
+            if (Camera is not FirstPersonCamera firstPersonCamera)
             {
                 return;
             }
@@ -132,19 +126,8 @@ namespace Oxygen
             firstPersonCamera.Turn(value);
         }
 
-        public FirstPersonMotor GetMotor()
-        {
-            return _motor;
-        }
-
-        public PlayerInteraction GetInteraction()
-        {
-            return _interaction;
-        }
-
-        public PlayerPointer GetPointer()
-        {
-            return _pointer;
-        }
+        public FirstPersonMotor Motor { get; private set; }
+        public PlayerInteraction Interaction { get; private set; }
+        public PlayerPointer Pointer { get; private set; }
     }
 }

@@ -47,12 +47,12 @@ namespace Iron
             ironPlayer.InteractionStopped += OnInteractionStopped;
             ironPlayer.GrabbingTimeValueChanged += OnGrabbingTimeValueChanged;
             
-            var pointer = ironPlayer.GetPointer();
+            var pointer = ironPlayer.Pointer;
             
             pointer.Pointed += OnPointed;
             pointer.Unpointed += OnUnpointed;
 
-            _camera = ironPlayer.GetCamera().GetCamera();
+            _camera = ironPlayer.Camera.Camera;
             
             _ironPlayer = ironPlayer;
         }
@@ -106,7 +106,7 @@ namespace Iron
             }
 
             _timeGrabbingCrosshairImage.fillAmount =
-                MathF.Round(value / _ironPlayer.GetTimeGrabInteractive().GetMaxTime(), 2);
+                MathF.Round(value / _ironPlayer.TimeGrabInteractive.GetMaxTime(), 2);
         }
 
         private void OnInteractionStopped()
@@ -171,7 +171,7 @@ namespace Iron
             _ironPlayer.InteractionStopped += OnInteractionStopped;
             _ironPlayer.GrabbingTimeValueChanged += OnGrabbingTimeValueChanged;
             
-            var pointer = _ironPlayer.GetPointer();
+            var pointer = _ironPlayer.Pointer;
             
             pointer.Pointed -= OnPointed;
             pointer.Unpointed -= OnUnpointed;

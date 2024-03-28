@@ -15,14 +15,15 @@ namespace Iron
                 return false;
             }
 
-            if (ironPlayer.GetInventory().Place(_name, _amount))
+            if (!ironPlayer.Inventory.Place(_name, _amount))
             {
-                Destroy(gameObject);
-                
-                return true;
+                return false;
             }
+            
+            Destroy(gameObject);
+                
+            return true;
 
-            return false;
         }
     }
 }

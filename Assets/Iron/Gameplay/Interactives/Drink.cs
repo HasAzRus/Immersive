@@ -3,7 +3,7 @@
 namespace Iron
 {
     [CreateAssetMenu(fileName = "New Drink", menuName = "Iron/Items/Drink")]
-    public class Drink : Item
+    public class Drink : ItemInteractive
     {
         [SerializeField] private float _amount;
         

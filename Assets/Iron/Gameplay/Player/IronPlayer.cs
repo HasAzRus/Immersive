@@ -38,15 +38,9 @@ namespace Iron
         
         private float _maxTimeToInteract;
         private float _timeToInteract;
-        
-        private BaseTimeGrabInteractive _timeGrabInteractive;
 
-        private bool _isStaminaEnough;
         private float _stamina;
-        
-        private PlayerMode _mode;
-        
-        private IronPlayerInventory _inventory;
+
         private IronPlayerCamera _ironCamera;
         private PlayerBob _bob;
 
@@ -57,14 +51,14 @@ namespace Iron
         {
             base.OnInitializeComponent();
 
-            _inventory = GetComponent<IronPlayerInventory>();
+            Inventory = GetComponent<IronPlayerInventory>();
             _bob = GetComponent<PlayerBob>();
 
             _transform = transform;
             
-            _inventory.Construct(this);
+            Inventory.Construct(this);
             
-            if (GetMotor() is not IronPlayerMotor ironPlayerMotor)
+            if (Motor is not IronPlayerMotor ironPlayerMotor)
             {
                 return;
             }
@@ -76,7 +70,7 @@ namespace Iron
             
             ironPlayerMotor.Fallen += OnFallen;
             
-            _ironCamera = GetCamera() as IronPlayerCamera;
+            _ironCamera = Camera as IronPlayerCamera;
         }
 
         protected override void OnGameBeginned()
@@ -88,7 +82,7 @@ namespace Iron
         
         private void OnModeChanged(PlayerMode value)
         {
-            GetInput().SetMode(value == PlayerMode.Inventory ? InputMode.UI : InputMode.Game);
+            Input.SetMode(value == PlayerMode.Inventory ? InputMode.UI : InputMode.Game);
         }
         
         private void OnUncrouched()
@@ -103,7 +97,7 @@ namespace Iron
         
         private void SetMode(PlayerMode value)
         {
-            _mode = value;
+            Mode = value;
             
             OnModeChanged(value);
         }
@@ -137,7 +131,7 @@ namespace Iron
             var direction = (caller.transform.position - _transform.position).normalized;
             direction.y = 0f;
 
-            if (GetMotor() is not IronPlayerMotor ironPlayerMotor)
+            if (Motor is not IronPlayerMotor ironPlayerMotor)
             {
                 return;
             }
@@ -149,7 +143,7 @@ namespace Iron
         {
             base.OnInteracting();
             
-            if (GetInteraction().CurrentInteractive is not BaseTimeGrabInteractive timeGrabInteractive)
+            if (Interaction.CurrentInteractive is not BaseTimeGrabInteractive timeGrabInteractive)
             {
                 return;
             }
@@ -159,7 +153,7 @@ namespace Iron
             _timeToInteract = 0f;
             _maxTimeToInteract = timeGrabInteractive.GetMaxTime();
 
-            _timeGrabInteractive = timeGrabInteractive;
+            TimeGrabInteractive = timeGrabInteractive;
         }
 
         protected override void OnInteractionStopped()
@@ -172,14 +166,14 @@ namespace Iron
                 _isTimingToInteract = false;
             }
 
-            _timeGrabInteractive = null;
+            TimeGrabInteractive = null;
         }
 
         protected override void OnDestroy()
         {
             base.OnDestroy();
             
-            if (GetMotor() is not IronPlayerMotor ironPlayerMotor)
+            if (Motor is not IronPlayerMotor ironPlayerMotor)
             {
                 return;
             }
@@ -206,7 +200,7 @@ namespace Iron
                 }
                 else
                 {
-                    _timeGrabInteractive.StopTimeInteraction();
+                    TimeGrabInteractive.StopTimeInteraction();
 
                     TryStopInteraction();
 
@@ -217,9 +211,9 @@ namespace Iron
                 GrabbingTimeValueChanged?.Invoke(_timeToInteract);
             }
 
-            if (GetInteraction().IsInteracting)
+            if (Interaction.IsInteracting)
             {
-                var currentInteractive = GetInteraction().CurrentInteractive;
+                var currentInteractive = Interaction.CurrentInteractive;
 
                 if (currentInteractive is BaseGrabInteractive grabInteractive)
                 {
@@ -233,7 +227,7 @@ namespace Iron
                 }
             }
             
-            if (GetMotor() is not IronPlayerMotor ironPlayerMotor)
+            if (Motor is not IronPlayerMotor ironPlayerMotor)
             {
                 return;
             }
@@ -260,11 +254,6 @@ namespace Iron
             }
         }
 
-        public IronPlayerInventory GetInventory()
-        {
-            return _inventory;
-        }
-
         public void OpenInventory()
         {
             SetMode(PlayerMode.Inventory);
@@ -279,11 +268,6 @@ namespace Iron
             InventoryClosed?.Invoke();
         }
 
-        public PlayerMode GetMode()
-        {
-            return _mode;
-        }
-
         public void AddStamina(float amount)
         {
             if (_stamina + amount < _maxStamina)
@@ -292,7 +276,7 @@ namespace Iron
 
                 if (_stamina > _minEnoughStamina)
                 {
-                    _isStaminaEnough = true;
+                    IsStaminaEnough = true;
                 }
             }
             else
@@ -309,21 +293,19 @@ namespace Iron
             }
             else
             {
-                _isStaminaEnough = false;
+                IsStaminaEnough = false;
                 
                 SetStamina(0f);
             }
         }
 
-        public bool CheckStaminaEnough()
-        {
-            return _isStaminaEnough;
-        }
+        public IronPlayerInventory Inventory { get; private set; }
 
-        public BaseTimeGrabInteractive GetTimeGrabInteractive()
-        {
-            return _timeGrabInteractive;
-        }
+        public bool IsStaminaEnough { get; private set; }
+        
+        public BaseTimeGrabInteractive TimeGrabInteractive { get; private set; }
+
+        public PlayerMode Mode { get; private set; }
 
         public float MaxStamina => _maxStamina;
     }

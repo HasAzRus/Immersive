@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace Iron
 {
-    public class IronInventory : Inventory
+    public class IronInventoryWidget : InventoryWidget
     {
         [SerializeField] private GameObject _panelGameObject;
         

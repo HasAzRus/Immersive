@@ -15,8 +15,6 @@ namespace Oxygen
         [SerializeField] private bool _allowToggleToFreeCamera;
         [SerializeField] private float _sensitive;
 
-        private FirstPersonInputConstraint _constraint;
-        
         protected override void OnGameInput()
         {
             base.OnGameInput();
@@ -26,7 +24,7 @@ namespace Oxygen
                 return;
             }
             
-            var disableMovement = _constraint is FirstPersonInputConstraint.All or FirstPersonInputConstraint.OnlyMovement;
+            var disableMovement = Constraint is FirstPersonInputConstraint.All or FirstPersonInputConstraint.OnlyMovement;
             
             if (!disableMovement)
             {
@@ -38,14 +36,14 @@ namespace Oxygen
             {
                 if (Input.GetKeyDown(KeyCode.N))
                 {
-                    var isGhostMode = firstPersonPlayer.GetMotor().GetMode() == FirstPersonMotorMode.Spectator;
+                    var isGhostMode = firstPersonPlayer.Motor.GetMode() == FirstPersonMotorMode.Spectator;
 
-                    firstPersonPlayer.GetMotor()
+                    firstPersonPlayer.Motor
                         .SetMode(isGhostMode ? FirstPersonMotorMode.Default : FirstPersonMotorMode.Spectator);
                 }
             }
             
-            var disableRotation = _constraint is FirstPersonInputConstraint.All or FirstPersonInputConstraint.OnlyRotation;
+            var disableRotation = Constraint is FirstPersonInputConstraint.All or FirstPersonInputConstraint.OnlyRotation;
             
             if (!disableRotation)
             {
@@ -64,14 +62,6 @@ namespace Oxygen
             }
         }
 
-        public FirstPersonInputConstraint GetConstraint()
-        {
-            return _constraint;
-        }
-        
-        public void SetConstraint(FirstPersonInputConstraint value)
-        {
-            _constraint = value;
-        }
+        public FirstPersonInputConstraint Constraint { get; set; }
     }
 }

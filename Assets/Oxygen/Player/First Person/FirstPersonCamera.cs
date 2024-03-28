@@ -35,10 +35,10 @@ namespace Oxygen
         {
             base.Start();
 
-            _initialCameraRotation = GetCameraTransform().localRotation;
-            _initialTransformRotation = GetTransform().rotation;
+            _initialCameraRotation = CameraTransform.localRotation;
+            _initialTransformRotation = Transform.rotation;
 
-            _defaultFieldOfView = GetCamera().fieldOfView;
+            _defaultFieldOfView = Camera.fieldOfView;
         }
 
         protected override void Update()
@@ -52,11 +52,11 @@ namespace Oxygen
             
             if (_isMouseLookEnabled)
             {
-                GetCameraTransform().localRotation =
+                CameraTransform.localRotation =
                     _initialCameraRotation * Quaternion.AngleAxis(_verticalAngle + _verticalForce, Vector3.right) *
                     Quaternion.AngleAxis(_horizontalForce, Vector3.up);
                 
-                GetTransform().rotation =
+                Transform.rotation =
                     _initialTransformRotation * Quaternion.AngleAxis(_horizontalAngle, Vector3.up);
             }
 
@@ -103,7 +103,7 @@ namespace Oxygen
 
         public void SetFieldOfView(float value)
         {
-            GetCamera().fieldOfView = value;
+            Camera.fieldOfView = value;
         }
 
         public void ClearFieldOfView()

@@ -25,13 +25,13 @@ namespace Iron
         
         private Transform _iconTransform;
 
-        private IronInventory _ironInventory;
+        private IronInventoryWidget _ironInventoryWidget;
         
-        protected override void OnConstruct(Inventory inventory)
+        protected override void OnConstruct(InventoryWidget inventoryWidget)
         {
-            base.OnConstruct(inventory);
+            base.OnConstruct(inventoryWidget);
             
-            _ironInventory = inventory as IronInventory;
+            _ironInventoryWidget = inventoryWidget as IronInventoryWidget;
         }
 
         private void OnSelectionChanged(bool value)
@@ -48,11 +48,11 @@ namespace Iron
 
         private bool TryMoveToSlot()
         {
-            var selectedSlot = _ironInventory.GetSelectedSlot();
+            var selectedSlot = _ironInventoryWidget.GetSelectedSlot();
 
             if (selectedSlot == null)
             {
-                _ironInventory.Drop(Name);
+                _ironInventoryWidget.Drop(Name);
                 
                 return false;
             }
@@ -92,7 +92,7 @@ namespace Iron
         {
             base.OnAssigned(name);
             
-            if (!_ironInventory.GetItemIconDatabase().TryGetValue(name, out var icon))
+            if (!_ironInventoryWidget.GetItemIconDatabase().TryGetValue(name, out var icon))
             {
                 return;
             }
@@ -137,7 +137,7 @@ namespace Iron
                 return;
             }
 
-            _ironInventory.SetDraggingSlot(this);
+            _ironInventoryWidget.SetDraggingSlot(this);
             
             _countText.CrossFadeAlpha(0f, 0.2f, true);
         }
@@ -154,7 +154,7 @@ namespace Iron
                 return;
             }
 
-            _ironInventory.SetDraggingSlot(null);
+            _ironInventoryWidget.SetDraggingSlot(null);
 
             TryMoveToSlot();
 
@@ -191,7 +191,7 @@ namespace Iron
 
             SetSelection(true);
             
-            _ironInventory.SetSelectedSlot(this);
+            _ironInventoryWidget.SetSelectedSlot(this);
         }
 
         public void OnPointerExit(PointerEventData eventData)
@@ -200,7 +200,7 @@ namespace Iron
 
             SetSelection(false);
 
-            _ironInventory.SetSelectedSlot(null);
+            _ironInventoryWidget.SetSelectedSlot(null);
         }
 
         public void OnPointerDown(PointerEventData eventData)
@@ -222,7 +222,7 @@ namespace Iron
 
             if (eventData.clickCount >= 1)
             {
-                _ironInventory.Interact(Name);
+                _ironInventoryWidget.Interact(Name);
             }
         }
     }

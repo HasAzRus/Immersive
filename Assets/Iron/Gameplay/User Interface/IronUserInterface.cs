@@ -5,16 +5,16 @@ namespace Iron
 {
     public class IronUserInterface : UserInterface
     {
-        [SerializeField] private IronInventory _inventory;
+        [SerializeField] private IronInventoryWidget inventoryWidget;
 
         private void OnInventoryClosed()
         {
-            _inventory.HidePanel();
+            inventoryWidget.HidePanel();
         }
 
         private void OnInventoryOpened()
         {
-            _inventory.ShowPanel();
+            inventoryWidget.ShowPanel();
         }
         
         protected override void OnGamePlayerConnected(Player player)
@@ -29,9 +29,9 @@ namespace Iron
             ironPlayer.InventoryOpened += OnInventoryOpened;
             ironPlayer.InventoryClosed += OnInventoryClosed;
 
-            var inventory = ironPlayer.GetInventory();
+            var inventory = ironPlayer.Inventory;
             
-            _inventory.Construct(inventory);
+            inventoryWidget.Construct(inventory);
         }
 
         protected override void OnGamePlayerDisconnected(Player player)
@@ -46,14 +46,14 @@ namespace Iron
             ironPlayer.InventoryOpened += OnInventoryOpened;
             ironPlayer.InventoryClosed += OnInventoryClosed;
             
-            _inventory.Clear();
+            inventoryWidget.Clear();
         }
 
         protected override void Start()
         {
             base.Start();
             
-            _inventory.HidePanel();
+            inventoryWidget.HidePanel();
         }
     }
 }

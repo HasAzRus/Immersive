@@ -13,16 +13,16 @@ namespace Oxygen
 
         private bool _isLocked;
 
-        private Inventory _inventory;
+        private InventoryWidget _inventoryWidget;
         
-        public void Construct(Inventory inventory)
+        public void Construct(InventoryWidget inventoryWidget)
         {
-            OnConstruct(inventory);
+            OnConstruct(inventoryWidget);
             
-            _inventory = inventory;
+            _inventoryWidget = inventoryWidget;
         }
 
-        protected virtual void OnConstruct(Inventory inventory)
+        protected virtual void OnConstruct(InventoryWidget inventoryWidget)
         {
             
         }
@@ -144,9 +144,9 @@ namespace Oxygen
             return _isLocked;
         }
 
-        public Inventory GetInventory()
+        public InventoryWidget GetInventory()
         {
-            return _inventory;
+            return _inventoryWidget;
         }
     }
 }
