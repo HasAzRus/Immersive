@@ -1,0 +1,87 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9728410148960a84ab0f0e78e92439b5, type: 3}
+  m_Name: Default Content Database
+  m_EditorClassIdentifier: 
+  _name: Default
+  _contents:
+  - _name: Player Start
+    _description: "\u0422\u043E\u0447\u043A\u0430 \u0441\u043F\u0430\u0432\u043D\u0430
+      \u0438\u0433\u0440\u043E\u043A\u0430"
+    _category: Tools
+    _icon: {fileID: 0}
+    _original: {fileID: 2964692901901846945, guid: 836ada15c5078f84498cb5971eaf841f, type: 3}
+    _allowSkin: 0
+    _skins: []
+  - _name: Counter
+    _description: 
+    _category: Tools
+    _icon: {fileID: 0}
+    _original: {fileID: 7031873514416418266, guid: 97b64fde6cfcd354db4948812663291c, type: 3}
+    _allowSkin: 0
+    _skins: []
+  - _name: Spawner
+    _description: 
+    _category: Tools
+    _icon: {fileID: 0}
+    _original: {fileID: 5279481615628786072, guid: 6276af477b518dd4bbdf0616ec786ffe, type: 3}
+    _allowSkin: 0
+    _skins: []
+  - _name: Container Spawner
+    _description: 
+    _category: Tools
+    _icon: {fileID: 0}
+    _original: {fileID: 7450747872033625733, guid: 8e5a8a1dd9beaab42af5d32b20990893, type: 3}
+    _allowSkin: 0
+    _skins: []
+  - _name: Kill Zone
+    _description: 
+    _category: Tools
+    _icon: {fileID: 0}
+    _original: {fileID: 1701351436184701840, guid: b34551f305cc0ed4b9b1d2e31d49895b, type: 3}
+    _allowSkin: 0
+    _skins: []
+  - _name: Message
+    _description: 
+    _category: Tools
+    _icon: {fileID: 0}
+    _original: {fileID: 6887380413995234733, guid: a18f81ac7488ba149b46eac3221b6fb6, type: 3}
+    _allowSkin: 0
+    _skins: []
+  - _name: Player Touch Trigger
+    _description: 
+    _category: Tools
+    _icon: {fileID: 0}
+    _original: {fileID: 4925871499526876058, guid: a54ef04d0257c304a859e62cccb9e886, type: 3}
+    _allowSkin: 0
+    _skins: []
+  - _name: Level Loader
+    _description: 
+    _category: Tools
+    _icon: {fileID: 0}
+    _original: {fileID: 8061228043238115230, guid: eef6ef09b400f3d48808c9947cecb096, type: 3}
+    _allowSkin: 0
+    _skins: []
+  - _name: Level Unloader
+    _description: 
+    _category: Tools
+    _icon: {fileID: 0}
+    _original: {fileID: 2299847763931927640, guid: 63af46823e9203e4e94f1d4ba7b601bd, type: 3}
+    _allowSkin: 0
+    _skins: []
+  - _name: Player Input Mode
+    _description: 
+    _category: Tools
+    _icon: {fileID: 0}
+    _original: {fileID: 2132214119778078781, guid: c5a37edf48b54e544b0e28ea427b795c, type: 3}
+    _allowSkin: 0
+    _skins: []
