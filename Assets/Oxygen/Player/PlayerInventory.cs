@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Oxygen
@@ -11,7 +12,8 @@ namespace Oxygen
 
     public interface ISlot : IItem
     {
-        int GetPreviousCount();
+        bool IsAssigned { get; }
+        bool IsLocked { get; }
     }
     
     [Serializable]
@@ -34,30 +36,25 @@ namespace Oxygen
     {
         public string Name { get; private set; }
         public int Count { get; private set; }
-        
-        private int _previousCount;
 
-        private bool _isAssigned;
-        private bool _isLocked;
+        public bool IsAssigned { get; private set; }
+        public bool IsLocked { get; private set; }
 
         public void Assign(string name)
         {
             Name = name;
-            _isAssigned = true;
+            IsAssigned = true;
         }
 
         public void Clear()
         {
             Name = string.Empty;
-            _isAssigned = false;
-            
-            SetCount(0);
-            _previousCount = 0;
+            IsAssigned = false;
         }
 
         public bool Add(int number)
         {
-            if (!_isAssigned)
+            if (!IsAssigned)
             {
                 return false;
             }
@@ -69,11 +66,12 @@ namespace Oxygen
 
         public bool Remove()
         {
-            if (!_isAssigned)
+            if (!IsAssigned)
             {
                 return false;
             }
 
+            SetCount(0);
             Clear();
 
             return true;
@@ -81,7 +79,7 @@ namespace Oxygen
 
         public bool Remove(int number)
         {
-            if (!_isAssigned)
+            if (!IsAssigned)
             {
                 return false;
             }
@@ -102,28 +100,12 @@ namespace Oxygen
         
         public void SetCount(int value)
         {
-            _previousCount = Count;
             Count = value;
-        }
-
-        public int GetPreviousCount()
-        {
-            return _previousCount;
-        }
-
-        public bool CheckAssigned()
-        {
-            return _isAssigned;
-        }
-
-        public bool CheckLocked()
-        {
-            return _isLocked;
         }
 
         public void SetLocked(bool value)
         {
-            _isLocked = value;
+            IsLocked = value;
         }
     }
     
@@ -147,7 +129,6 @@ namespace Oxygen
             for (var i = 0; i < _capacity; i++)
             {
                 var slot = new Slot();
-                //slot.SetLocked(false);
                 
                 _slots[i] = slot;
             }
@@ -155,35 +136,44 @@ namespace Oxygen
 
         public bool Place(string name, int count)
         {
+            Slot firstFreeSlot = null;
+            
             foreach (var slot in _slots)
             {
-                if (slot.CheckLocked())
+                if (slot.IsLocked)
                 {
                     continue;
                 }
                 
-                if (slot.CheckAssigned())
+                if (slot.IsAssigned)
                 {
                     if (slot.Name != name)
                     {
                         continue;
                     }
-                }
-                else
-                {
-                    slot.Assign(name);
+                    
+                    slot.Add(count);
+
+                    Debug.Log($"Был добавлен предмет {name} в кол-ве {count}");
+                    Placed?.Invoke(name, count);
+
+                    return true;
                 }
 
-                slot.Add(count);
-                
-                Debug.Log($"Был добавлен предмет {name} в кол-ве {count}");
-                
-                Placed?.Invoke(name, count);
-
-                return true;
+                firstFreeSlot ??= slot;
             }
 
-            return false;
+            if (firstFreeSlot == null)
+            {
+                return false;
+            }
+            
+            firstFreeSlot.Assign(name);
+            firstFreeSlot.Add(count);
+
+            Placed?.Invoke(name, count);
+            
+            return true;
         }
 
         public bool Place(IItem item)
@@ -195,12 +185,12 @@ namespace Oxygen
         {
             foreach (var slot in _slots)
             {
-                if (slot.CheckLocked())
+                if (slot.IsLocked)
                 {
                     continue;
                 }
                 
-                if (!slot.CheckAssigned())
+                if (!slot.IsAssigned)
                 {
                     continue;
                 }
@@ -226,12 +216,12 @@ namespace Oxygen
         {
             foreach (var slot in _slots)
             {
-                if (slot.CheckLocked())
+                if (slot.IsLocked)
                 {
                     continue;
                 }
                 
-                if (!slot.CheckAssigned())
+                if (!slot.IsAssigned)
                 {
                     continue;
                 }
@@ -257,16 +247,16 @@ namespace Oxygen
             return Remove(item.Name, item.Count);
         }
 
-        public bool CheckIsHave(string name)
+        public bool CheckExists(string name)
         {
             foreach (var slot in _slots)
             {
-                if (slot.CheckLocked())
+                if (slot.IsLocked)
                 {
                     continue;
                 }
                 
-                if (!slot.CheckAssigned())
+                if (!slot.IsAssigned)
                 {
                     continue;
                 }
@@ -282,16 +272,16 @@ namespace Oxygen
             return false;
         }
 
-        public bool CheckIsHave(string name, int count)
+        public bool CheckExists(string name, int count)
         {
             foreach (var slot in _slots)
             {
-                if (slot.CheckLocked())
+                if (slot.IsLocked)
                 {
                     continue;
                 }
                 
-                if (!slot.CheckAssigned())
+                if (!slot.IsAssigned)
                 {
                     continue;
                 }
@@ -312,23 +302,31 @@ namespace Oxygen
             return false;
         }
 
-        public bool CheckIsHave(IItem item)
+        public bool CheckExists(IItem item)
         {
-            return CheckIsHave(item.Name, item.Count);
+            return CheckExists(item.Name, item.Count);
         }
 
         public IItem[] GetItems()
         {
-            var items = new IItem[_capacity];
+            var items = new List<IItem>();
 
-            for (var i = 0; i < _capacity; i++)
+            foreach (var slot in _slots)
             {
-                var slot = _slots[i];
+                if (slot.IsLocked)
+                {
+                    continue;
+                }
+
+                if (!slot.IsAssigned)
+                {
+                    continue;
+                }
                 
-                items[i] = slot.CheckLocked() ? null : slot.CheckAssigned() ? _slots[i] : null;
+                items.Add(slot);
             }
-            
-            return items;
+
+            return items.ToArray();
         }
     }
 }
