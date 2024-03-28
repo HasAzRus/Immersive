@@ -29,11 +29,9 @@ namespace Oxygen
 
 		[SerializeField] private Launcher _launcher;
 
-		private bool _isPause;
-
 		private void SetPause(bool value)
 		{
-			_isPause = value;
+			IsPause = value;
 
 			OnPauseChanged(value);
 			PauseChanged?.Invoke(value);
@@ -171,7 +169,7 @@ namespace Oxygen
 		{
 			SaveLoad.Load(index);
 			
-			Debug.Log("Загрузка данных");
+			Debug.Log($"Загрузка данных из профиля {index}");
 
 			Loaded?.Invoke();
 		}
@@ -180,7 +178,7 @@ namespace Oxygen
 		{
 			Saving?.Invoke();
 			
-			Debug.Log("Сохранение данных");
+			Debug.Log($"Сохранение данных в профиль {index}");
 
 			SaveLoad.Save(index);
 		}
@@ -195,6 +193,6 @@ namespace Oxygen
 			SetPause(false);
 		}
 
-		public bool IsPause => _isPause;
+		public bool IsPause { get; private set; }
 	}
 }

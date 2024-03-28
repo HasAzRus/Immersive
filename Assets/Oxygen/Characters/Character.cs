@@ -21,8 +21,6 @@ namespace Oxygen
 		[SerializeField] private bool _allowDamageReceive;
 
 		private float _health;
-		
-		private bool _isDead;
 
 		protected override void Start()
 		{
@@ -85,7 +83,7 @@ namespace Oxygen
 				return;
 			}
 
-			_isDead = true;
+			IsDead = true;
 
 			OnDied(caller);
 			Died?.Invoke(caller);
@@ -135,6 +133,6 @@ namespace Oxygen
 			_allowDamageReceive = value;
 		}
 
-		public bool IsDead => _isDead;
+		public bool IsDead { get; private set; }
 	}
 }

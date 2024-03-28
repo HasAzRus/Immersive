@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Oxygen
 {
 	[CreateAssetMenu(fileName = "New Localization Database", menuName = "Oxygen/Databases/Localization")]
-	public class LocalizationDatabase : ScriptableObject
+	public class LocalizationDatabase : Database<LocalizationCategory>
 	{
 		[SerializeField] private LocalizationCategory[] _categories; 
 
@@ -25,25 +25,6 @@ namespace Oxygen
 
 					return true;
 				}
-			}
-
-			return false;
-		}
-
-		public bool TryGetCategory(string name, out LocalizationCategory category)
-		{
-			category = null;
-
-			foreach (var other in _categories)
-			{
-				if (other.GetName() != name)
-				{
-					continue;
-				}
-
-				category = other;
-
-				return true;
 			}
 
 			return false;

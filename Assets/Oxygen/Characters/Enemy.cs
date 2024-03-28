@@ -35,7 +35,7 @@ namespace Oxygen
             
             var isObstacleNotExists = Physics.Linecast(position, playerPosition, _obstacleLayerMask);
 
-            _isPlayerClosest = _player.GetHealth() != 0 &&
+            _isPlayerClosest = _player.IsDead &&
                                isDistanceClosest &&
                                isObstacleNotExists;
 

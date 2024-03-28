@@ -25,7 +25,7 @@ namespace Oxygen
 		{
 			text = string.Empty;
 
-			if (!TryGetItem(name, out LocalizationItem item))
+			if (!TryGetItem(name, out var item))
 			{
 				return false;
 			}
@@ -37,12 +37,12 @@ namespace Oxygen
 		{
 			text = string.Empty;
 
-			if (!_database.TryGetCategory(category, out LocalizationCategory categoryItem))
+			if (!_database.TryGetValue(category, out var categoryItem))
 			{
 				return false;
 			}
 
-			if (!categoryItem.TryGetItem(name, out LocalizationItem item))
+			if (!categoryItem.TryGetItem(name, out var item))
 			{
 				return false;
 			}
@@ -91,7 +91,7 @@ namespace Oxygen
 		{
 			text = string.Empty;
 
-			if (!_database.TryGetCategory(category, out var categoryItem))
+			if (!_database.TryGetValue(category, out var categoryItem))
 			{
 				return false;
 			}

@@ -12,10 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d207aa2f2684350bfecf0b88170a193, type: 3}
   m_Name: Item Icon Database
   m_EditorClassIdentifier: 
-  _icons:
-  - _name: Medicine
-    _sprite: {fileID: 21300000, guid: 2b9bf8ec5d54fe249ac9e20979ccd42c, type: 3}
-  - _name: Energetic
-    _sprite: {fileID: 21300000, guid: 99d7e777338ab8f4ba890cc738794dba, type: 3}
-  - _name: Test 3
-    _sprite: {fileID: 21300000, guid: c34cd61ed96ff9a40a54e159467c5155, type: 3}
+  _keyValues:
+  - _key: Medicine
+    _value: {fileID: 21300000, guid: fca3bc21b4600e04faaddb69c5fad81e, type: 3}
+  - _key: Energetic
+    _value: {fileID: 21300000, guid: 99d7e777338ab8f4ba890cc738794dba, type: 3}

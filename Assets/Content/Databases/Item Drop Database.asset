@@ -12,13 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47aea589ff4a4f7c8b9a982a49db3ae5, type: 3}
   m_Name: Item Drop Database
   m_EditorClassIdentifier: 
-  _itemDrops:
-  - _name: Medicine
-    _gameObject: {fileID: 3887899179197804393, guid: 23bba88f1a26dc1449feb9845be74f71,
+  _keyValues:
+  - _key: Medicine
+    _value: {fileID: 3887899179197804393, guid: 23bba88f1a26dc1449feb9845be74f71,
       type: 3}
-  - _name: Energetic
-    _gameObject: {fileID: 9155807360722540442, guid: ce7f3084076fe4248ab1d3bf6d990705,
-      type: 3}
-  - _name: Test 3
-    _gameObject: {fileID: 5539531829007885704, guid: 1d5c3f406e2420c43bc54a15eac455e6,
+  - _key: Energetic
+    _value: {fileID: 9155807360722540442, guid: ce7f3084076fe4248ab1d3bf6d990705,
       type: 3}

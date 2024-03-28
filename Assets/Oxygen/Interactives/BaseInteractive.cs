@@ -20,7 +20,6 @@ namespace Oxygen
 		[Header("Interactive")]
 
 		[SerializeField] private bool _isEnabled;
-		[SerializeField] private bool _isSingle;
 
 		protected abstract bool OnInteract(Player player);
 		
@@ -67,6 +66,5 @@ namespace Oxygen
 		}
 
 		public bool IsEnabled => _isEnabled;
-		public bool IsSingle => _isSingle;
 	}
 }

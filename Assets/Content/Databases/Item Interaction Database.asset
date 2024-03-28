@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5398df1fd884188a9a03fb7a5791796, type: 3}
   m_Name: Item Interaction Database
   m_EditorClassIdentifier: 
-  _items:
-  - {fileID: 11400000, guid: e0afcc6d645b127419688b1f80a1c967, type: 2}
-  - {fileID: 11400000, guid: c391721e8821f90438ff01c56f9320a3, type: 2}
+  _keyValues:
+  - _key: Medicine
+    _value: {fileID: 11400000, guid: e0afcc6d645b127419688b1f80a1c967, type: 2}
+  - _key: Energetic
+    _value: {fileID: 11400000, guid: c391721e8821f90438ff01c56f9320a3, type: 2}
