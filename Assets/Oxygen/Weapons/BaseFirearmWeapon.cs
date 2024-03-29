@@ -8,72 +8,15 @@ namespace Oxygen
 		Single,
 		Automatic
 	}
-
-	[Serializable]
-	public class MuzzleFlash
-	{
-		[SerializeField] private float _maxTime;
-
-		[SerializeField] private Light _light;
-
-		private bool _isFlashing;
-		private float _time;
-
-		public void Update()
-		{
-			if (_isFlashing)
-			{
-				if (_time < _maxTime)
-				{
-					_time += Time.deltaTime;
-				}
-				else
-				{
-					Clear();
-				}
-
-				_light.intensity = 1.0f - _time / _maxTime;
-			}
-		}
-
-		public void Flash()
-		{
-			_isFlashing = true;
-
-			_light.enabled = true;
-		}
-
-		public void Clear()
-		{
-			_isFlashing = false;
-			_time = 0f;
-
-			_light.enabled = false;
-		}
-	}
-
-	[Serializable]
-	public class FireImpact
-	{
-		[SerializeField] private Range _horizontal;
-		[SerializeField] private Range _vertical;
-
-		public Range GetHorizontal()
-		{
-			return _horizontal;
-		}
-
-		public Range GetVertical()
-		{
-			return _vertical;
-		}
-	}
-
+	
 	public abstract class BaseFirearmWeapon : BaseWeapon
 	{
 		public event Action<FireImpact> Impacting;
 		public event Action<int> AmmoChanged;
 
+		public event Action Aiming;
+		public event Action AimStopped;
+		
 		[Header("Firearm")] 
 		
 		[SerializeField] private bool _isInfinity;
@@ -90,6 +33,8 @@ namespace Oxygen
 
 		[SerializeField] private bool _allowOwnerDirection;
 		[SerializeField] private Transform _trunkTransform;
+
+		private bool _isAiming;
 
 		private bool _isFiring;
 
@@ -115,6 +60,22 @@ namespace Oxygen
 			StartCooldown();
 		}
 
+		private void StartAiming()
+		{
+			_isAiming = true;
+			
+			OnAiming();
+			Aiming?.Invoke();
+		}
+
+		private void StopAiming()
+		{
+			_isAiming = false;
+			
+			OnAimStopped();
+			AimStopped?.Invoke();
+		}
+
 		protected virtual void OnImpacting(FireImpact impact)
 		{
 			
@@ -123,6 +84,16 @@ namespace Oxygen
 		protected virtual void OnShoot()
 		{
 
+		}
+
+		protected virtual void OnAiming()
+		{
+			
+		}
+
+		protected virtual void OnAimStopped()
+		{
+			
 		}
 
 		protected virtual void OnConsumed()
@@ -144,7 +115,10 @@ namespace Oxygen
 		{
 			base.Update();
 
-			_muzzleFlash.Update();
+			if (_allowMuzzleFlash)
+			{
+				_muzzleFlash.Update();
+			}
 
 			if (!IsActive)
 			{
@@ -220,6 +194,11 @@ namespace Oxygen
 					break;
 				}
 				case 1:
+					if (!_isFiring)
+					{
+						StartAiming();
+					}
+					
 					break;
 			}
 
@@ -242,6 +221,11 @@ namespace Oxygen
 					break;
 				}
 				case 1:
+					if (_isAiming)
+					{
+						StopAiming();
+					}
+					
 					break;
 			}
 		}
@@ -275,12 +259,10 @@ namespace Oxygen
 
 				return amount;
 			}
-			else
-			{
-				SetAmmo(Ammo + ammo);
 
-				return ammo;
-			}
+			SetAmmo(Ammo + ammo);
+
+			return ammo;
 		}
 
 		public void SetMaxAmmo(int value)
@@ -293,7 +275,6 @@ namespace Oxygen
 		public Transform Trunk => _trunkTransform;
 
 		public int Ammo { get; private set; }
-		
 		public int MaxAmmo => _maxAmmo;
 		
 		public float DamageMultiplier => _damageMultiplier;

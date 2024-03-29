@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Oxygen
 {
@@ -57,32 +58,34 @@ namespace Oxygen
         private void CalculateMovement()
         {
             var deltaTime = Time.deltaTime;
-            
-            if (_mode == FirstPersonMotorMode.Default)
-            {
-                if (!_characterController.enabled)
-                {
-                    return;
-                }
-                
-                if (_characterController.isGrounded)
-                {
-                    CalculateGroundMovement();
-                }
-                else
-                {
-                    CalculateAirMovement();
-                }
-                
-                _moveDirection = CalculateAdditionalMoveDirection(_moveDirection);
-                
-                _characterController.Move((_moveDirection + CalculateAdditionalDirection()) * deltaTime);
-            }
-            else if (_mode == FirstPersonMotorMode.Spectator)
-            {
-                CalculateGhostMovement();
 
-                _transform.position += _moveDirection * deltaTime;
+            switch (_mode)
+            {
+                case FirstPersonMotorMode.Default when !_characterController.enabled:
+                    return;
+                case FirstPersonMotorMode.Default:
+                {
+                    if (_characterController.isGrounded)
+                    {
+                        CalculateGroundMovement();
+                    }
+                    else
+                    {
+                        CalculateAirMovement();
+                    }
+                
+                    _moveDirection = CalculateAdditionalMoveDirection(_moveDirection);
+                
+                    _characterController.Move((_moveDirection + CalculateAdditionalDirection()) * deltaTime);
+                    break;
+                }
+                case FirstPersonMotorMode.Spectator:
+                    CalculateGhostMovement();
+
+                    _transform.position += _moveDirection * deltaTime;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
         }
 

@@ -11,11 +11,16 @@ namespace Oxygen
 		[SerializeField] private Health _health;
 		[SerializeField] private bool _destroyOnKilled;
 
-		protected abstract void OnKilled(GameObject caller);
+		protected abstract void OnDied(GameObject caller);
 
 		protected override void OnDamageApplied(GameObject caller, float damage)
 		{
 			_health.Remove(damage);
+
+			if (_health.IsEmpty)
+			{
+				Kill(caller);
+			}
 		}
 
 		protected override void Start()
@@ -27,7 +32,7 @@ namespace Oxygen
 
 		public bool Kill(GameObject caller)
 		{
-			OnKilled(caller);
+			OnDied(caller);
 			Died?.Invoke(caller);
 
 			if(_destroyOnKilled)

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Iron
 {
-    [CreateAssetMenu(fileName = "New Icon Database", menuName = "Iron/Database/Item Icon")]
+    [CreateAssetMenu(fileName = "New Sprite Database", menuName = "Iron/Database/Sprites")]
     public class SpriteDatabase : Database<Sprite>
     {
         //...

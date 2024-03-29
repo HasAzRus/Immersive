@@ -6,9 +6,9 @@ namespace Oxygen
     {
         [SerializeField] private float _minVerticalAngle;
         [SerializeField] private float _maxVerticalAngle;
-        
-        private float _defaultFieldOfView;
 
+        private Coroutine _smoothFieldOfViewRoutine;
+        
         private bool _isMouseLookEnabled;
 
         private float _verticalForce;
@@ -38,7 +38,7 @@ namespace Oxygen
             _initialCameraRotation = CameraTransform.localRotation;
             _initialTransformRotation = Transform.rotation;
 
-            _defaultFieldOfView = Camera.fieldOfView;
+            DefaultFieldOfView = Camera.fieldOfView;
         }
 
         protected override void Update()
@@ -54,14 +54,15 @@ namespace Oxygen
             {
                 CameraTransform.localRotation =
                     _initialCameraRotation * Quaternion.AngleAxis(_verticalAngle + _verticalForce, Vector3.right) *
-                    Quaternion.AngleAxis(_horizontalForce, Vector3.up);
+                    Quaternion.AngleAxis(_horizontalForce, Vector3.up) *
+                    Quaternion.AngleAxis(_horizontalForce * 0.4f, Vector3.forward);
                 
                 Transform.rotation =
                     _initialTransformRotation * Quaternion.AngleAxis(_horizontalAngle, Vector3.up);
             }
 
-            _inputHorizontalForce *= 0.98f;
-            _inputVerticalForce *= 0.98f;
+            _inputHorizontalForce /= 1.2f;
+            _inputVerticalForce /= 1.2f;
         }
 
         public void LookAt(float value)
@@ -106,9 +107,26 @@ namespace Oxygen
             Camera.fieldOfView = value;
         }
 
-        public void ClearFieldOfView()
+        public void SetSmoothFieldOfView(float value, float duration)
         {
-            SetFieldOfView(_defaultFieldOfView);
+            if (_smoothFieldOfViewRoutine != null)
+            {
+                Coroutines.Stop(_smoothFieldOfViewRoutine);
+            }
+            
+            _smoothFieldOfViewRoutine = Coroutines.Run(ProcedureAnimation.PlayRoutine(duration, 
+                deltaTIme =>
+            {
+                var fieldOfView = Camera.fieldOfView;
+                fieldOfView = Mathf.Lerp(fieldOfView, value, deltaTIme);
+
+                Camera.fieldOfView = fieldOfView;
+            }, () =>
+            {
+                Camera.fieldOfView = value;
+            }));
         }
+        
+        public float DefaultFieldOfView { get; private set; }
     }
 }

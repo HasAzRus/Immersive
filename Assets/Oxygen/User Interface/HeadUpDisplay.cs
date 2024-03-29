@@ -4,10 +4,10 @@
     {
         public void Construct(Player player)
         {
-            OnConstruct(player);
+            OnConstruction(player);
         }
         
-        protected virtual void OnConstruct(Player player)
+        protected virtual void OnConstruction(Player player)
         {
             
         }

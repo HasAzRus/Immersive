@@ -25,12 +25,12 @@ namespace Oxygen
 
 		public void Construct(Character owner)
 		{
-			OnConstruct(owner);
+			OnConstruction(owner);
 			
 			Owner = owner;
 		}
 		
-		protected virtual void OnConstruct(Character owner)
+		protected virtual void OnConstruction(Character owner)
 		{
 			
 		}

@@ -111,10 +111,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _isEnabled: 1
-  _onlyOnce: 1
-  _destroyAfterInteraction: 1
   _name: Test 3
-  _amount: 1
+  _count: 1
 --- !u!1 &5813633693041183596
 GameObject:
   m_ObjectHideFlags: 0

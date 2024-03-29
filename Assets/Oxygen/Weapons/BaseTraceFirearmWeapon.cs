@@ -20,7 +20,7 @@ namespace Oxygen
 
 		private bool Trace(Vector3 position, Vector3 direction, float damageMultiplier)
 		{
-			if (!Physics.Raycast(position, direction, out RaycastHit hit,
+			if (!Physics.Raycast(position, direction, out var hit,
 				_maxDistance))
 			{
 				return false;

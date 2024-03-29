@@ -89,7 +89,7 @@ namespace Oxygen
                     continue;
                 }
 
-                if (slot.Name == name)
+                if (slot.Name != name)
                 {
                     continue;
                 }
@@ -125,8 +125,12 @@ namespace Oxygen
                     continue;
                 }
                 
+                if (!slot.Remove(count))
+                {
+                    return false;
+                }
+                
                 Removed?.Invoke(name, count);
-                slot.Remove(count);
                 
                 Debug.Log($"Предмет был удален в кол-ве: {name} - {count}");
 
@@ -141,7 +145,7 @@ namespace Oxygen
             return Remove(item.Name, item.Count);
         }
 
-        public bool CheckExists(string name)
+        public int CheckExists(string name)
         {
             foreach (var slot in _slots)
             {
@@ -160,10 +164,10 @@ namespace Oxygen
                     continue;
                 }
 
-                return true;
+                return slot.Count;
             }
 
-            return false;
+            return -1;
         }
 
         public bool CheckExists(string name, int count)

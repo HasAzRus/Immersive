@@ -9,7 +9,7 @@ namespace Oxygen
         
         event Action<string> RemovedAll;
 
-        bool CheckExists(string name);
+        int CheckExists(string name);
         bool CheckExists(string name, int count);
 
         IItem[] GetItems();

@@ -47,7 +47,7 @@ namespace Oxygen
 			_transform = transform;
 		}
 
-		protected override void OnKilled(GameObject caller)
+		protected override void OnDied(GameObject caller)
 		{
 			foreach(var fragment in _fragments) 
 			{

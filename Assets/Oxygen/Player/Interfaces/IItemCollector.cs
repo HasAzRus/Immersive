@@ -9,7 +9,7 @@
         bool RemoveItem(string name);
         bool RemoveItem(string name, int count);
 
-        bool CheckExists(string name);
+        int CheckExists(string name);
         bool CheckExists(string name, int count);
     }
 }

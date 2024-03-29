@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Oxygen
 {
-	public class WeaponManager : Behaviour
+	public class WeaponManager : Behaviour, IReadableWeaponManager
 	{
 		public event Action<BaseWeapon> WeaponChanged;
 
@@ -68,6 +68,8 @@ namespace Oxygen
 
 			CurrentWeapon = null;
 			CurrentWeaponIndex = -1;
+			
+			WeaponChanged?.Invoke(null);
 
 			return true;
 		}

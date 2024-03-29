@@ -55,16 +55,14 @@ namespace Oxygen
                 return false;
             }
 
-            if (Count - number > 0)
+            var value = Count - number;
+
+            if (value < 0)
             {
-                SetCount(Count - number);
+                return false;
             }
-            else
-            {
-                SetCount(0);
-                
-                Clear();
-            }
+            
+            SetCount(Count - number);
 
             return true;
         }

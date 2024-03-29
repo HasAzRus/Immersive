@@ -22,21 +22,8 @@ namespace Oxygen
         [SerializeField] private float _min;
         [SerializeField] private float _max;
 
-        public Range(float min, float max)
-        {
-            _min = min;
-            _max = max;
-        }
-        
-        public float GetMin()
-        {
-            return _min;
-        }
-
-        public float GetMax()
-        {
-            return _max;
-        }
+        public float Min => _min;
+        public float Max => _max;
     }
     
     public class World
