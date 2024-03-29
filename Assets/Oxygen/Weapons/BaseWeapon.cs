@@ -8,8 +8,8 @@ namespace Oxygen
 	{
 		public event Action<float> CooldownValueChanged;
 
-		public event Action Cooldowning;
-		public event Action Cooldowned;
+		public event Action CooldownStarted;
+		public event Action CooldownStopped;
 
 		[Header("Base Weapon")]
 
@@ -23,19 +23,19 @@ namespace Oxygen
 
 		private float _cooldownTime;
 
-		public void Construct(GameObject owner)
+		public void Construct(Character owner)
 		{
 			OnConstruct(owner);
 			
 			Owner = owner;
 		}
-
-		protected abstract bool OnFire(int mode);
-
-		protected virtual void OnConstruct(GameObject owner)
+		
+		protected virtual void OnConstruct(Character owner)
 		{
 			
 		}
+
+		protected abstract bool OnFire(int mode);
 		
 		protected virtual void OnStopFire(int mode) 
 		{
@@ -52,11 +52,6 @@ namespace Oxygen
 
 		}
 
-		protected virtual void OnClear()
-		{
-
-		}
-		
 		protected override void Update()
 		{
 			base.Update();
@@ -72,7 +67,7 @@ namespace Oxygen
 					_cooldownTime = 0f;
 					IsCooldown = false;
 
-					Cooldowned?.Invoke();
+					CooldownStopped?.Invoke();
 				}
 
 				CooldownValueChanged?.Invoke(_cooldownTime / _maxCooldownTime);
@@ -83,7 +78,7 @@ namespace Oxygen
 		{
 			IsCooldown = true;
 
-			Cooldowning?.Invoke();
+			CooldownStarted?.Invoke();
 		}
 
 		public bool Fire(int mode)
@@ -110,11 +105,6 @@ namespace Oxygen
 			OnDeselect();
 		}
 
-		public void Clear()
-		{
-			OnClear();
-		}
-
 		public void SetActive(bool value)
 		{
 			_isActive = value;
@@ -135,6 +125,6 @@ namespace Oxygen
 
 		public string Name => _name;
 
-		public GameObject Owner { get; private set; }
+		public Character Owner { get; private set; }
 	}
 }

@@ -62,7 +62,7 @@ namespace Iron
                 return false;
             }
 
-            if (!selectedSlot.CheckAssigned())
+            if (!selectedSlot.IsAssigned)
             {
                 selectedSlot.Assign(Name);
             }
@@ -132,7 +132,7 @@ namespace Iron
                 return;
             }
             
-            if (!CheckAssigned())
+            if (!IsAssigned)
             {
                 return;
             }
@@ -149,7 +149,7 @@ namespace Iron
                 return;
             }
             
-            if (!CheckAssigned())
+            if (!IsAssigned)
             {
                 return;
             }
@@ -175,7 +175,7 @@ namespace Iron
                 return;
             }
             
-            if (!CheckAssigned())
+            if (!IsAssigned)
             {
                 return;
             }
@@ -210,12 +210,12 @@ namespace Iron
                 return;
             }
             
-            if (CheckLocked())
+            if (IsLocked)
             {
                 return;
             }
 
-            if (!CheckAssigned())
+            if (!IsAssigned)
             {
                 return;
             }

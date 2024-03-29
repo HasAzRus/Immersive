@@ -49,6 +49,7 @@ GameObject:
   - component: {fileID: 8994079990533638182}
   - component: {fileID: 5740690825753801082}
   - component: {fileID: 6744053779936199579}
+  - component: {fileID: 3918349101603478475}
   - component: {fileID: 3214026088503487580}
   m_Layer: 7
   m_Name: Iron Player
@@ -208,7 +209,8 @@ MonoBehaviour:
   _dropForce: 1
   _dropTransform: {fileID: 8477351325178971065}
   _itemDropDatabase: {fileID: 11400000, guid: 07b8bbc3454d5504eaa84784cd2566fd, type: 2}
-  itemInteractiveDatabase: {fileID: 0}
+  itemInteractiveDatabase: {fileID: 11400000, guid: 6f92ce8c4b46a34478dfb6532288c151,
+    type: 2}
 --- !u!114 &6744053779936199579
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -231,6 +233,19 @@ MonoBehaviour:
   _shakeSpeed: 10
   _alwaysShake: 1
   _minShakeIntensity: 0.05
+--- !u!114 &3918349101603478475
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 372743909035896945}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8739adb0e669314a8f03f3fc9d848f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _weapons: []
 --- !u!114 &3214026088503487580
 MonoBehaviour:
   m_ObjectHideFlags: 0

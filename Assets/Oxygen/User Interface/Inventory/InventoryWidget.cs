@@ -6,23 +6,38 @@ namespace Oxygen
     {
         [SerializeField] private SlotWidget[] _drawerSlots;
 
-        private PlayerInventory _inventory;
-        
-        public void Construct(PlayerInventory inventory)
+        public void Construct(IItemCollector itemCollector)
         {
+            var inventory = itemCollector.Inventory;
+            
             inventory.Placed += OnInventoryPlaced;
             inventory.Removed += OnInventoryRemoved;
             
             inventory.RemovedAll += OnInventoryRemovedAll;
             
-            OnConstruct(inventory);
+            OnConstruction(itemCollector);
+
+            ItemCollector = itemCollector;
+        }
+
+        protected virtual void OnConstruction(IItemCollector itemCollector)
+        {
             
-            _inventory = inventory;
+        }
+        
+        protected override void Start()
+        {
+            base.Start();
+
+            foreach (var slotDrawer in _drawerSlots)
+            {
+                slotDrawer.Construct(this);
+            }
         }
 
         private void OnInventoryRemovedAll(string name)
         {
-            
+            Remove(name);
         }
 
         private void OnInventoryRemoved(string name, int count)
@@ -39,12 +54,12 @@ namespace Oxygen
         {
             foreach (var drawerSlot in _drawerSlots)
             {
-                if (drawerSlot.CheckLocked())
+                if (drawerSlot.IsLocked)
                 {
                     continue;
                 }
                 
-                if (!drawerSlot.CheckAssigned())
+                if (!drawerSlot.IsAssigned)
                 {
                     continue;
                 }
@@ -53,16 +68,34 @@ namespace Oxygen
                 {
                     continue;
                 }
+                
+                drawerSlot.Remove(count);
 
-                if (count > 0)
+                return;
+            }
+        }
+
+        private void Remove(string name)
+        {
+            foreach (var drawerSlot in _drawerSlots)
+            {
+                if (drawerSlot.IsLocked)
                 {
-                    drawerSlot.Remove(count);
-                }
-                else
-                {
-                    drawerSlot.Clear();
+                    continue;
                 }
 
+                if (!drawerSlot.IsAssigned)
+                {
+                    continue;
+                }
+
+                if (drawerSlot.Name != name)
+                {
+                    continue;
+                }
+                
+                drawerSlot.Clear();
+                
                 return;
             }
         }
@@ -73,12 +106,12 @@ namespace Oxygen
             
             foreach (var drawerSlot in _drawerSlots)
             {
-                if (drawerSlot.CheckLocked())
+                if (drawerSlot.IsLocked)
                 {
                     continue;
                 }
 
-                if (!drawerSlot.CheckAssigned())
+                if (!drawerSlot.IsAssigned)
                 {
                     if (firstFreeSlot == null)
                     {
@@ -107,41 +140,23 @@ namespace Oxygen
             firstFreeSlot.Add(count);
         }
 
-        protected virtual void OnConstruct(PlayerInventory inventory)
-        {
-            
-        }
-
         protected virtual void OnClear()
         {
             
         }
 
-        protected override void Start()
-        {
-            base.Start();
-
-            foreach (var slotDrawer in _drawerSlots)
-            {
-                slotDrawer.Construct(this);
-            }
-        }
-
-        protected PlayerInventory GetInventory()
-        {
-            return _inventory;
-        }
-
         public void Clear()
         {
-            _inventory.Placed -= OnInventoryPlaced;
+            ItemCollector.Inventory.Placed -= OnInventoryPlaced;
             
-            _inventory.Removed -= OnInventoryRemoved;
-            _inventory.RemovedAll -= OnInventoryRemovedAll;
+            ItemCollector.Inventory.Removed -= OnInventoryRemoved;
+            ItemCollector.Inventory.RemovedAll -= OnInventoryRemovedAll;
 
             OnClear();
 
-            _inventory = null;
+            ItemCollector = null;
         }
+        
+        protected IItemCollector ItemCollector { get; private set; }
     }
 }

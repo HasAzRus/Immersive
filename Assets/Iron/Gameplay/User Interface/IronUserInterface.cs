@@ -29,9 +29,7 @@ namespace Iron
             ironPlayer.InventoryOpened += OnInventoryOpened;
             ironPlayer.InventoryClosed += OnInventoryClosed;
 
-            var inventory = ironPlayer.Inventory;
-            
-            inventoryWidget.Construct(inventory);
+            inventoryWidget.Construct(ironPlayer);
         }
 
         protected override void OnGamePlayerDisconnected(Player player)

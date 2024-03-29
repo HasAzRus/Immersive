@@ -24,7 +24,7 @@ namespace Oxygen
 
 		private void Launch(BaseProjectile projectile, Vector3 direction)
 		{
-			projectile.Construct(Owner, Damage * DamageMultiplier);
+			projectile.Construct(Owner.gameObject, Damage * DamageMultiplier);
 			projectile.Launch(_speed * direction);
 		}
 		

@@ -35,7 +35,7 @@ namespace Oxygen
 
 			var damage = Damage * damageMultiplier;
 
-			receiver.ApplyDamage(Owner, damage);
+			receiver.ApplyDamage(Owner.gameObject, damage);
 
 			Damaged?.Invoke(hit.collider.gameObject, damage);
 			OnDamaged(hit.collider.gameObject, damage);

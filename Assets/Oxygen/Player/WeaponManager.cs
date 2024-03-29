@@ -9,18 +9,19 @@ namespace Oxygen
 
 		[SerializeField] private BaseWeapon[] _weapons;
 
-		private GameObject _owner;
-		
-		public void Construct(GameObject owner)
+		public void Construct(Character owner)
 		{
-			_owner = owner;
-			
 			CurrentWeaponIndex = -1;
 
 			foreach (var weapon in _weapons)
 			{
-				weapon.Construct(_owner);
+				weapon.Construct(owner);
 			}
+		}
+
+		protected virtual void OnConstruction(Character owner)
+		{
+			
 		}
 
 		public bool ChangeWeapon(int index)

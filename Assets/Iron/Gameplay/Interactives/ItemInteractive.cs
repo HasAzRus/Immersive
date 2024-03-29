@@ -18,7 +18,7 @@ namespace Iron
             
             if (OnInteract(ironPlayer))
             {
-                ironPlayer.Inventory.Remove(_name, 1);
+                ironPlayer.RemoveItem(_name, 1);
             }
 
             return false;

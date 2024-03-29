@@ -51,27 +51,27 @@ namespace Iron
 
         public void RemoveFromPlayer(string name)
         {
-            GetInventory().Remove(name, 1);
+            ItemCollector.RemoveItem(name, 1);
         }
 
         public void Drop(string name)
         {
-            if(GetInventory() is not IronPlayerInventory ironPlayerInventory)
+            if(ItemCollector is not IIronItemCollector ironItemCollector)
             {
                 return;
             }
 
-            ironPlayerInventory.Drop(name, 1);
+            ironItemCollector.Drop(name, 1);
         }
 
         public void Interact(string name)
         {
-            if(GetInventory() is not IronPlayerInventory ironPlayerInventory)
+            if(ItemCollector is not IIronItemCollector ironItemCollector)
             {
                 return;
             }
 
-            if (ironPlayerInventory.Interact(name))
+            if (ironItemCollector.Interact(name))
             {
                 UpdateDisplayItem(null);
             }

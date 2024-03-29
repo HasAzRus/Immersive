@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Oxygen
 {
-	public class Character : Behaviour,
+	public abstract class Character : Behaviour,
 		IDamageable,
 		IKillable
 	{

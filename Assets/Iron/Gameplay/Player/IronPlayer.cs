@@ -10,9 +10,10 @@ namespace Iron
         Inventory,
     }
     
-    [RequireComponent(typeof(PlayerInventory))]
+    [RequireComponent(typeof(IronPlayerInventory))]
     [RequireComponent(typeof(PlayerBob))]
-    public class IronPlayer : FirstPersonPlayer
+    [RequireComponent(typeof(WeaponManager))]
+    public class IronPlayer : FirstPersonPlayer, IIronItemCollector
     {
         public event Action<float> GrabbingTimeValueChanged; 
 
@@ -36,6 +37,8 @@ namespace Iron
         private float _maxTimeToInteract;
         private float _timeToInteract;
 
+        private IronPlayerInventory _inventory;
+        
         private IronPlayerCamera _ironCamera;
         private PlayerBob _bob;
 
@@ -48,8 +51,8 @@ namespace Iron
             _transform = transform;
             _bob = GetComponent<PlayerBob>();
 
-            Inventory = GetComponent<IronPlayerInventory>();
-            Inventory.Construct(this);
+            _inventory = GetComponent<IronPlayerInventory>();
+            _inventory.Construct(this);
             
             if (Motor is not IronPlayerMotor ironPlayerMotor)
             {
@@ -263,8 +266,45 @@ namespace Iron
         {
             _stamina.Add(amount);
         }
+        
+        public bool GiveItem(string name, int count)
+        {
+            return _inventory.Place(name, count);
+        }
 
-        public IronPlayerInventory Inventory { get; private set; }
+        public bool RemoveItem(string name)
+        {
+            return _inventory.Remove(name);
+        }
+
+        public bool RemoveItem(string name, int count)
+        {
+            return _inventory.Remove(name, count);
+        }
+
+        public bool CheckExists(string name)
+        {
+            return _inventory.CheckExists(name);
+        }
+
+        public bool CheckExists(string name, int count)
+        {
+            return _inventory.CheckExists(name, count);
+        }
+        
+        public bool Drop(string name, int count)
+        {
+            return _inventory.Drop(name, count);
+        }
+
+        public bool Interact(string name)
+        {
+            return _inventory.Interact(name);
+        }
+        
+        public IReadableInventory Inventory => _inventory;
+
+        public WeaponManager WeaponManager { get; private set; }
         public IReadableStamina ReadableStamina => _stamina;
         public BaseTimeGrabInteractive TimeGrabInteractive { get; private set; }
         public PlayerMode Mode { get; private set; }
