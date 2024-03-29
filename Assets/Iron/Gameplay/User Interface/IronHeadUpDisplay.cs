@@ -8,8 +8,7 @@ namespace Iron
     public class IronHeadUpDisplay : HeadUpDisplay
     {
         [SerializeField] private float _healthMinValue;
-        [SerializeField] private float _staminaMinValue;
-        
+
         [SerializeField] private Image _healthBarImage;
         [SerializeField] private Image _staminaBarImage;
 
@@ -33,7 +32,7 @@ namespace Iron
         {
             base.OnConstruct(player);
             
-            player.HealthChanged += OnHealthChanged;
+            player.ReadableHealth.ValueChanged += OnHealthChanged;
             player.DamageApplied += OnDamageApplied;
 
             if (player is not IronPlayer ironPlayer)
@@ -41,7 +40,7 @@ namespace Iron
                 return;
             }
             
-            ironPlayer.StaminaChanged += OnStaminaChanged;
+            ironPlayer.ReadableStamina.ValueChanged += OnStaminaChanged;
             
             ironPlayer.Interacting += OnInteracting;
             ironPlayer.InteractionStopped += OnInteractionStopped;
@@ -66,14 +65,14 @@ namespace Iron
 
         private void OnHealthChanged(float value)
         {
-            _healthBarImage.fillAmount = MathF.Round(value / _ironPlayer.MaxHealth, 2);
+            _healthBarImage.fillAmount = MathF.Round(value / _ironPlayer.ReadableHealth.MaxValue, 2);
             _healthBarImage.color = value > _healthMinValue ? Color.white : Color.red;
         }
         
         private void OnStaminaChanged(float value)
         {
-            _staminaBarImage.fillAmount = MathF.Round(value / _ironPlayer.MaxStamina, 2);
-            _staminaBarImage.color = value > _staminaMinValue ? Color.white : Color.red;
+            _staminaBarImage.fillAmount = MathF.Round(value / _ironPlayer.ReadableStamina.MaxValue, 2);
+            _staminaBarImage.color = value > _ironPlayer.ReadableStamina.MinEnoughValue ? Color.white : Color.red;
         }
         
         private void OnUnpointed(GameObject target)
@@ -163,8 +162,9 @@ namespace Iron
         {
             base.OnClear();
 
-            _ironPlayer.HealthChanged -= OnHealthChanged;
-            _ironPlayer.StaminaChanged -= OnStaminaChanged;
+            _ironPlayer.ReadableHealth.ValueChanged -= OnHealthChanged;
+            _ironPlayer.ReadableStamina.ValueChanged -= OnStaminaChanged;
+            
             _ironPlayer.DamageApplied -= OnDamageApplied;
             
             _ironPlayer.Interacting += OnInteracting;

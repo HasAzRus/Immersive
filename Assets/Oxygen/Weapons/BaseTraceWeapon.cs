@@ -25,7 +25,7 @@ namespace Oxygen
 
 			OnTraced(hit);
 
-			if (!hit.collider.TryGetComponent<IDamageReceiver>(out var receiver))
+			if (!hit.collider.TryGetComponent<IDamageable>(out var receiver))
 			{
 				return false;
 			}

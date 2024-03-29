@@ -11,7 +11,7 @@ namespace Oxygen
 		{
 			base.OnCollisionEnter(collision);
 
-			if (!collision.gameObject.TryGetComponent<IDamageReceiver>(out var damageReceiver))
+			if (!collision.gameObject.TryGetComponent<IDamageable>(out var damageReceiver))
 			{
 				return;
 			}

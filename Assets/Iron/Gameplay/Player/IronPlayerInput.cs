@@ -58,7 +58,7 @@ namespace Iron
 
             if (Input.GetButtonDown("Jump"))
             {
-                if (ironPlayer.IsStaminaEnough)
+                if (ironPlayer.ReadableStamina.IsEnough)
                 {
                     ironPlayerMotor.Jump();
                 }
@@ -107,7 +107,7 @@ namespace Iron
             }
             
             _isRunningInput = Input.GetButton("Sprint") && !ironPlayerMotor.CheckCrouching() &&
-                              ironPlayer.IsStaminaEnough;
+                              ironPlayer.ReadableStamina.IsEnough;
 
             if (_isRunningInput)
             {

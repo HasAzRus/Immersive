@@ -19,10 +19,7 @@ namespace Iron
         public event Action InventoryOpened;
         public event Action InventoryClosed;
 
-        public event Action<float> StaminaChanged; 
-
-        [SerializeField] private float _maxStamina;
-        [SerializeField] private float _minEnoughStamina;
+        [SerializeField] private Stamina _stamina;
 
         [SerializeField] private float _runningStaminaCost;
         [SerializeField] private float _jumpStaminaCost;
@@ -39,23 +36,19 @@ namespace Iron
         private float _maxTimeToInteract;
         private float _timeToInteract;
 
-        private float _stamina;
-
         private IronPlayerCamera _ironCamera;
         private PlayerBob _bob;
 
         private Transform _transform;
-        
-        
+
         protected override void OnInitializeComponent()
         {
             base.OnInitializeComponent();
 
-            Inventory = GetComponent<IronPlayerInventory>();
+            _transform = transform;
             _bob = GetComponent<PlayerBob>();
 
-            _transform = transform;
-            
+            Inventory = GetComponent<IronPlayerInventory>();
             Inventory.Construct(this);
             
             if (Motor is not IronPlayerMotor ironPlayerMotor)
@@ -102,16 +95,9 @@ namespace Iron
             OnModeChanged(value);
         }
 
-        private void SetStamina(float value)
-        {
-            _stamina = value;
-            
-            StaminaChanged?.Invoke(value);
-        }
-        
         private void OnJumping()
         {
-            SpendStamina(_jumpStaminaCost);
+            _stamina.Remove(_jumpStaminaCost);
         }
         
         private void OnFallen(float height)
@@ -246,11 +232,11 @@ namespace Iron
 
             if (ironPlayerMotor.CheckRunning())
             {
-                SpendStamina(_runningStaminaCost * deltaTime);
+                _stamina.Remove(_runningStaminaCost * deltaTime);
             }
             else
             {
-                AddStamina(_staminaRest * deltaTime);
+                _stamina.Add(_staminaRest * deltaTime);
             }
         }
 
@@ -268,45 +254,19 @@ namespace Iron
             InventoryClosed?.Invoke();
         }
 
-        public void AddStamina(float amount)
+        public void AddHealth(float amount)
         {
-            if (_stamina + amount < _maxStamina)
-            {
-                SetStamina(_stamina + amount);
-
-                if (_stamina > _minEnoughStamina)
-                {
-                    IsStaminaEnough = true;
-                }
-            }
-            else
-            {
-                SetStamina(_maxStamina);
-            }
+            WritableHealth.Add(amount);
         }
 
-        public void SpendStamina(float amount)
+        public void AddStamina(float amount)
         {
-            if (_stamina - amount > 0f)
-            {
-                SetStamina(_stamina - amount);
-            }
-            else
-            {
-                IsStaminaEnough = false;
-                
-                SetStamina(0f);
-            }
+            _stamina.Add(amount);
         }
 
         public IronPlayerInventory Inventory { get; private set; }
-
-        public bool IsStaminaEnough { get; private set; }
-        
+        public IReadableStamina ReadableStamina => _stamina;
         public BaseTimeGrabInteractive TimeGrabInteractive { get; private set; }
-
         public PlayerMode Mode { get; private set; }
-
-        public float MaxStamina => _maxStamina;
     }
 }

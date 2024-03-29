@@ -42,7 +42,7 @@ namespace Oxygen
 			var distance = Vector3.Distance(cachedTransform.position, other.transform.position);
 			var amount = 1f - (distance / _collider.radius);
 
-			if (other.TryGetComponent<IDamageReceiver>(out var damageReceiver))
+			if (other.TryGetComponent<IDamageable>(out var damageReceiver))
 			{
 				damageReceiver.ApplyDamage(gameObject, _damage * amount);
 			}

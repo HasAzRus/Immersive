@@ -9,7 +9,7 @@ namespace Oxygen
 
         private bool _isTrigger;
 
-        private IDamageReceiver _damageReceiver;
+        private IDamageable _damageable;
 
         protected override void Update()
         {
@@ -17,7 +17,7 @@ namespace Oxygen
 
             if (_isTrigger)
             {
-                _damageReceiver.ApplyDamage(gameObject, _amount * Time.deltaTime);
+                _damageable.ApplyDamage(gameObject, _amount * Time.deltaTime);
             }
         }
         
@@ -25,12 +25,12 @@ namespace Oxygen
         {
             base.OnTriggerEnter(other);
             
-            if (!other.TryGetComponent(out IDamageReceiver damageReceiver))
+            if (!other.TryGetComponent(out IDamageable damageReceiver))
             {
                 return;
             }
 
-            _damageReceiver = damageReceiver;
+            _damageable = damageReceiver;
 
             if (_isDamageAlways)
             {
@@ -39,7 +39,7 @@ namespace Oxygen
                 return;
             }
             
-            _damageReceiver.ApplyDamage(gameObject, _amount);
+            _damageable.ApplyDamage(gameObject, _amount);
         }
 
         protected override void OnTriggerExit(Collider other)

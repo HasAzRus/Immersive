@@ -2,7 +2,7 @@
 
 namespace Oxygen
 {
-	public interface IDamageReceiver
+	public interface IDamageable
 	{
 		void ApplyDamage(GameObject caller, float damage);
 	}

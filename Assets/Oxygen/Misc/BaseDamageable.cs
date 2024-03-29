@@ -3,8 +3,8 @@ using UnityEngine;
 
 namespace Oxygen
 {
-	public abstract class BaseDamageReceiver : Behaviour,
-		IDamageReceiver
+	public abstract class BaseDamageable : Behaviour,
+		IDamageable
 	{
 		public event Action<GameObject, float> DamageApplied;
 

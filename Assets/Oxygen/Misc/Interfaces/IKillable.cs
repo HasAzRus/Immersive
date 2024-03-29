@@ -4,6 +4,6 @@ namespace Oxygen
 {
 	public interface IKillable
 	{
-		void Kill(GameObject caller);
+		bool Kill(GameObject caller);
 	}
 }

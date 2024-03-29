@@ -3,7 +3,7 @@
 namespace Oxygen
 {
 	[RequireComponent(typeof(Rigidbody))]
-	public class DamageBox : Behaviour, IDamageReceiver
+	public class DamageBox : Behaviour, IDamageable
 	{
 		private Transform _transform;
 

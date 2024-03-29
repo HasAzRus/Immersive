@@ -7,7 +7,7 @@ namespace Oxygen
         [SerializeField] private float _amount;
         [SerializeField] private bool _isDamageAlways;
 
-        private IDamageReceiver _damageReceiver;
+        private IDamageable _damageable;
         
         private bool _isCollision;
 
@@ -17,7 +17,7 @@ namespace Oxygen
 
             if (_isCollision)
             {
-                _damageReceiver.ApplyDamage(gameObject, _amount * Time.deltaTime);
+                _damageable.ApplyDamage(gameObject, _amount * Time.deltaTime);
             }
         }
 
@@ -25,12 +25,12 @@ namespace Oxygen
         {
             base.OnCollisionEnter(collision);
 
-            if (!collision.gameObject.TryGetComponent(out IDamageReceiver damageReceiver))
+            if (!collision.gameObject.TryGetComponent(out IDamageable damageReceiver))
             {
                 return;
             }
 
-            _damageReceiver = damageReceiver;
+            _damageable = damageReceiver;
             
             if (_isDamageAlways)
             {

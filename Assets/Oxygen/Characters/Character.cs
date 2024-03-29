@@ -4,17 +4,15 @@ using UnityEngine;
 namespace Oxygen
 {
 	public class Character : Behaviour,
-		IDamageReceiver,
+		IDamageable,
 		IKillable
 	{
 		public event Action<GameObject, float> DamageApplied;
 		public event Action<GameObject> Died;
 
-		public event Action<float> HealthChanged;
+		[Header("Character")] 
 		
-		[Header("Character")]
-		
-		[SerializeField] private float _maxHealth;
+		[SerializeField] private Health _health;
 		[SerializeField] private bool _applyMaxHealth;
 		
 		[SerializeField] private bool _allowDamageReceive;
@@ -25,36 +23,13 @@ namespace Oxygen
 
 			if (_applyMaxHealth)
 			{
-				ApplyHealth(_maxHealth);
+				_health.Fill();
 			}
-		}
-
-		private void SetHealth(float value)
-		{
-			Health = value;
-
-			HealthChanged?.Invoke(value);
 		}
 		
 		protected virtual void OnDamageApplied(GameObject caller,  float damage)
 		{
-			if (!_allowDamageReceive)
-			{
-				return;
-			}
-			
-			var value = Health - damage;
 
-			if (value > 0f)
-			{
-				SetHealth(value);
-			}
-			else
-			{
-				SetHealth(0);
-
-				Kill(caller);
-			}
 		}
 
 		protected virtual void OnDied(GameObject caller) 
@@ -69,52 +44,39 @@ namespace Oxygen
 				throw new ArgumentOutOfRangeException();
 			}
 			
+			if (!_allowDamageReceive)
+			{
+				return;
+			}
+			
+			_health.Remove(damage);
+
+			if (_health.IsEmpty)
+			{
+				Kill(caller);
+			}
+
 			OnDamageApplied(caller, damage);
 			DamageApplied?.Invoke(caller, damage);
 		}
 
-		public void Kill(GameObject caller)
+		public bool Kill(GameObject caller)
 		{
 			if(IsDead)
 			{
-				return;
+				return false;
 			}
 
 			IsDead = true;
 
 			OnDied(caller);
 			Died?.Invoke(caller);
+
+			return true;
 		}
 
-		public void ApplyHealth(float amount)
-		{
-			if (amount < 0)
-			{
-				throw new ArgumentOutOfRangeException();
-			}
-
-			SetHealth(Mathf.Clamp(amount, 1, _maxHealth));
-		}
-
-		public void AddHealth(float amount)
-		{
-			if (amount < 0)
-			{
-				throw new ArgumentOutOfRangeException();
-			}
-			
-			var value = Health + amount;
-			
-			ApplyHealth(value);
-		}
-
-		public void SetAllowDamageReceive(bool value)
-		{
-			_allowDamageReceive = value;
-		}
-
+		protected IWritableHealth WritableHealth => _health;
 		public bool IsDead { get; private set; }
-		public float MaxHealth => _maxHealth;
-		public float Health { get; private set; }
+		public IReadableHealth ReadableHealth => _health;
 	}
 }

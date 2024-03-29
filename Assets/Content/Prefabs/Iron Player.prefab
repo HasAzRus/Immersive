@@ -208,8 +208,7 @@ MonoBehaviour:
   _dropForce: 1
   _dropTransform: {fileID: 8477351325178971065}
   _itemDropDatabase: {fileID: 11400000, guid: 07b8bbc3454d5504eaa84784cd2566fd, type: 2}
-  _itemInteractionDatabase: {fileID: 11400000, guid: 6f92ce8c4b46a34478dfb6532288c151,
-    type: 2}
+  itemInteractiveDatabase: {fileID: 0}
 --- !u!114 &6744053779936199579
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -244,11 +243,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02f81bc34c244650bb04a1402b017618, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxHealth: 100
+  _health:
+    _maxValue: 100
   _applyMaxHealth: 1
   _allowDamageReceive: 1
-  _maxStamina: 100
-  _minEnoughStamina: 10
+  _stamina:
+    _maxValue: 100
+    _minEnoughValue: 10
   _runningStaminaCost: 5
   _jumpStaminaCost: 2
   _staminaRest: 2

@@ -3,62 +3,41 @@ using UnityEngine;
 
 namespace Oxygen
 {
-	public abstract class BaseDestructive : BaseDamageReceiver,
+	public abstract class BaseDestructive : BaseDamageable,
 		IKillable
 	{
-		public event Action<GameObject> Killed;
-		public event Action<float> HealthChanged;
+		public event Action<GameObject> Died;
 
-		[SerializeField] private float _maxHealth;
+		[SerializeField] private Health _health;
 		[SerializeField] private bool _destroyOnKilled;
-
-		private float _health;
-
-		private void SetHealth(float value)
-		{
-			_health = value;
-
-			OnHealthChanged(_health);
-			HealthChanged?.Invoke(_health);
-		}
 
 		protected abstract void OnKilled(GameObject caller);
 
-		protected virtual void OnHealthChanged(float value)
-		{
-
-		}
-		
 		protected override void OnDamageApplied(GameObject caller, float damage)
 		{
-			if(_health - damage > 0)
-			{
-				SetHealth(_health - damage);
-			}
-			else
-			{
-				SetHealth(0);
-
-				Kill(caller);
-			}
+			_health.Remove(damage);
 		}
 
 		protected override void Start()
 		{
 			base.Start();
 
-			SetHealth(_maxHealth);
+			_health.Fill();
 		}
 
-		public void Kill(GameObject caller)
+		public bool Kill(GameObject caller)
 		{
 			OnKilled(caller);
-			Killed?.Invoke(caller);
+			Died?.Invoke(caller);
 
 			if(_destroyOnKilled)
 			{
 				Destroy(gameObject);
 			}
+
+			return true;
 		}
+
+		public IReadableHealth ReadableHealth => _health;
 	}
 }
