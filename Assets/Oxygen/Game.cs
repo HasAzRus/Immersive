@@ -9,6 +9,7 @@ namespace Oxygen
 		Win,
 		Loss
 	}
+	
 	public class Game : Behaviour
 	{
 		public static event Action<Player> GlobalBeginned;
@@ -21,13 +22,12 @@ namespace Oxygen
 
 		public event Action<bool> PauseChanged;
 
-		public event Action Saving;
-		public event Action Loaded;
-
 		[SerializeField] private Player _defaultPlayer;
 		[SerializeField] private UserInterface _defaultUserInterface;
 
 		[SerializeField] private Launcher _launcher;
+
+		private bool _isRunning;
 
 		private void SetPause(bool value)
 		{
@@ -85,8 +85,6 @@ namespace Oxygen
 
 			if (loadLevelMode == LoadLevelMode.Single)
 			{
-				Transform spawnTransform;
-
 				var playerStart = FindFirstObjectByType<PlayerStart>();
 
 				if (playerStart == null)
@@ -96,7 +94,7 @@ namespace Oxygen
 					return;
 				}
 
-				spawnTransform = playerStart.transform;
+				var spawnTransform = playerStart.transform;
 				
 				Debug.Log("Спавн игрока");
 
@@ -105,7 +103,7 @@ namespace Oxygen
 
 				player.Construct(this);
 			}
-
+			
 			if (player != null)
 			{
 				Coroutines.Run(BeginPlayRoutine(player));
@@ -126,19 +124,6 @@ namespace Oxygen
 
 			LevelManager.Loading -= OnLevelLoading;
 			LevelManager.Loaded -= OnLevelLoaded;
-		}
-
-		protected override void Start()
-		{
-			base.Start();
-
-			Debug.Log("Создание экземпляра игры");
-
-			var userInterface = Instantiate(_defaultUserInterface);
-			userInterface.Construct(this);
-			
-			Debug.Log("Загрузка стартового уровня");
-			LevelManager.Load(_launcher.GetLevel(), LoadLevelMode.Single);
 		}
 
 		public void ConnectPlayer(Player player)
@@ -165,22 +150,24 @@ namespace Oxygen
 			Ended?.Invoke(reason);
 		}
 
-		public void Load(int index)
+		public void Run()
 		{
-			SaveLoad.Load(index);
+			if (_isRunning)
+			{
+				throw new Exception("Игра уже запущена");
+			}
 			
-			Debug.Log($"Загрузка данных из профиля {index}");
+			Debug.Log("Запуск игры");
 
-			Loaded?.Invoke();
-		}
+			Debug.Log("Создание экземпляра игры");
 
-		public void Save(int index)
-		{
-			Saving?.Invoke();
+			var userInterface = Instantiate(_defaultUserInterface);
+			userInterface.Construct(this);
 			
-			Debug.Log($"Сохранение данных в профиль {index}");
+			Debug.Log("Загрузка стартового уровня");
+			LevelManager.Load(_launcher.Level, LoadLevelMode.Single);
 
-			SaveLoad.Save(index);
+			_isRunning = true;
 		}
 
 		public void Pause()

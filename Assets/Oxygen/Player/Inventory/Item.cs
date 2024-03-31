@@ -1,20 +1,14 @@
-﻿using System;
-using UnityEngine;
-
-namespace Oxygen
+﻿namespace Oxygen
 {
-    [Serializable]
     public class Item : IItem
     {
-        [SerializeField] private string _name;
-        [SerializeField] private int _count;
+        public string Name { get; }
+        public int Count { get; }
 
-        public string Name => _name;
-        public int Count => _count;
-
-        public override string ToString()
+        public Item(string name, int count)
         {
-            return $"Предмет: {_name} в кол-ве - {_count}";
+            Name = name;
+            Count = count;
         }
     }
 }

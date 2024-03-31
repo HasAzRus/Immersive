@@ -34,7 +34,8 @@ namespace Oxygen
 				Instantiate(autoSpawnGameObject);
 			}
 			
-			Instantiate(_defaultGame);
+			var game = Instantiate(_defaultGame);
+			game.Run();
 		}
 	}
 }

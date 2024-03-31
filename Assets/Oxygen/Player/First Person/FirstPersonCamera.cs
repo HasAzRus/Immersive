@@ -55,14 +55,14 @@ namespace Oxygen
                 CameraTransform.localRotation =
                     _initialCameraRotation * Quaternion.AngleAxis(_verticalAngle + _verticalForce, Vector3.right) *
                     Quaternion.AngleAxis(_horizontalForce, Vector3.up) *
-                    Quaternion.AngleAxis(_horizontalForce * 0.4f, Vector3.forward);
+                    Quaternion.AngleAxis(_horizontalForce * 0.8f, Vector3.forward);
                 
                 Transform.rotation =
                     _initialTransformRotation * Quaternion.AngleAxis(_horizontalAngle, Vector3.up);
             }
 
-            _inputHorizontalForce /= 1.2f;
-            _inputVerticalForce /= 1.2f;
+            _inputHorizontalForce /= 1.4f;
+            _inputVerticalForce /= 1.4f;
         }
 
         public void LookAt(float value)

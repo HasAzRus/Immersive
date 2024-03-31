@@ -23,7 +23,7 @@ namespace Iron
 
         private void OnEnergyValueChanged(float value)
         {
-            _energyBarImage.fillAmount = MathF.Round(value / _ironPlayer.Flashlight.ReadableEnergy.MaxValue, 1);
+            _energyBarImage.fillAmount = MathF.Round(value / _ironPlayer.Flashlight.ReadableEnergy.MaxValue, 2);
         }
 
         private void OnFlashlightEnabled()

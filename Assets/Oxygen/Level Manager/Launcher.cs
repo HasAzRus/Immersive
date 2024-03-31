@@ -12,9 +12,6 @@ namespace Oxygen
 			_level = level;
 		}
 
-		public Level GetLevel()
-		{
-			return _level;
-		}
+		public Level Level => _level;
 	}
 }

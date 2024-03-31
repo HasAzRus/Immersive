@@ -1,7 +1,8 @@
 ﻿using System;
+using Oxygen;
 using UnityEngine;
 
-namespace Oxygen
+namespace Iron
 {
     public interface IReadableStamina : IReadableHealth
     {

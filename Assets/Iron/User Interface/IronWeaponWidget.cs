@@ -12,6 +12,7 @@ namespace Iron
         [SerializeField] [Range(0.01f, 0.99f)] private float _crosshairScaleAmount;
         
         [SerializeField] private Text _ammoText;
+        [SerializeField] private GameObject _ammoGameObject;
 
         private RectTransform _crosshairRectTransform;
 
@@ -40,6 +41,8 @@ namespace Iron
 
             _crosshairInitialSize = _crosshairRectTransform.sizeDelta;
             _crosshairScale = 1f;
+            
+            SetWeaponCrosshairCrossFade(true);
         }
 
         private void SetAmmoText(int ammo, int max)
@@ -79,12 +82,15 @@ namespace Iron
             if (weapon == null)
             {
                 _ammoText.text = string.Empty;
+                _ammoGameObject.Deactivate();
                 
                 SetWeaponCrosshairCrossFade(true);
 
                 return;
             }
 
+            _ammoGameObject.Activate();
+            
             SetWeaponCrosshairCrossFade(false);
             SetAmmoText(weapon.Ammo, weapon.MaxAmmo);
         }

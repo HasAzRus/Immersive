@@ -6,7 +6,7 @@ namespace Iron
 {
     public class ItemReceiver : BaseInteractive
     {
-        [SerializeField] private Item[] _items;
+        [SerializeField] private SerializeItem[] _items;
         
         protected override bool OnInteract(Player player)
         {

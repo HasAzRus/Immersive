@@ -337,7 +337,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _name: Gun
-  _isActive: 1
+  _isActive: 0
   _damage: 10
   _maxCooldownTime: 1
   _fireSpeed: 1
@@ -364,6 +364,8 @@ MonoBehaviour:
   _offset: []
   _aimFieldOfView: 40
   _ammoItemName: Gun Ammo
+  _bulletHolePrefab: {fileID: 7360203941183526966, guid: bba29f921e083af43a97c9fb2a1aa82e,
+    type: 3}
 --- !u!1 &5266883228232223574
 GameObject:
   m_ObjectHideFlags: 0
@@ -566,7 +568,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _name: Machine Gun
-  _isActive: 1
+  _isActive: 0
   _damage: 7
   _maxCooldownTime: 0.3
   _fireSpeed: 1
@@ -593,6 +595,8 @@ MonoBehaviour:
   _offset: []
   _aimFieldOfView: 55
   _ammoItemName: Machine Gun Ammo
+  _bulletHolePrefab: {fileID: 7360203941183526966, guid: bba29f921e083af43a97c9fb2a1aa82e,
+    type: 3}
 --- !u!1 &8172330053542023692
 GameObject:
   m_ObjectHideFlags: 0
@@ -638,7 +642,7 @@ Light:
   m_Type: 0
   m_Shape: 0
   m_Color: {r: 0.30566037, g: 1, b: 0.55900675, a: 1}
-  m_Intensity: 3
+  m_Intensity: 0
   m_Range: 10
   m_SpotAngle: 83.124626
   m_InnerSpotAngle: 51.389694

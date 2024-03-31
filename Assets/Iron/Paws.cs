@@ -1,8 +1,7 @@
 ﻿using System;
-using Unity.Burst.CompilerServices;
 using UnityEngine;
 
-namespace Oxygen
+namespace Iron
 {
 	[Serializable]
 	public class Limb
@@ -84,7 +83,7 @@ namespace Oxygen
 		}
 	}
 
-	public class Paws : Behaviour
+	public class Paws : Oxygen.Behaviour
 	{
 		[SerializeField] private float _maxLineDistance;
 

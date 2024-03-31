@@ -78,6 +78,11 @@ namespace Oxygen
 		{
 			_weapons[index].SetActive(value);
 		}
+
+		public bool CheckWeaponActive(int index)
+		{
+			return _weapons[index].IsActive;
+		}
 		
 		public BaseWeapon CurrentWeapon { get; private set; }
 		public int CurrentWeaponIndex { get; private set; }

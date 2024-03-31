@@ -128,8 +128,7 @@ namespace Iron
                     var height = Mathf.Abs(_startFallingPosition.y - cachedTransform.position.y);
                     
                     Fallen?.Invoke(height);
-                    Debug.Log($"Упал с высоты: {height}");
-                    
+
                     _isFalling = false;
                 }
             }

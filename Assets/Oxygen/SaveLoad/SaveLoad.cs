@@ -1,10 +1,16 @@
-﻿namespace Oxygen
+﻿using System;
+
+namespace Oxygen
 {
 	public class SaveLoad
 	{
+		public static event Action<IWritableStorage> Saving;
+		public static event Action<IReadableStorage> Loading; 
+
 		private static GameStorage[] _storages;
-		
-		public static void Initialize(string name, int count)
+		private static GameStorage _currentStorage;
+
+		public static void Initialize(string name, int count, int index = 0)
 		{
 			_storages = new GameStorage[count];
 			
@@ -12,16 +18,29 @@
 			{
 				_storages[i] = new GameStorage($"{name}_{i}");
 			}
+			
+			SetProfile(index);
 		}
 
-		public static void Load(int index)
+		public static void Load()
 		{
-			_storages[index].Load();
+			_currentStorage.Load();
+			Loading?.Invoke(_currentStorage);
 		}
 
-		public static void Save(int index)
+		public static void Save(bool force)
 		{
-			_storages[index].Save();
+			Saving?.Invoke(_currentStorage);
+
+			if (force)
+			{
+				_currentStorage.Save();
+			}
+		}
+
+		public static void SetProfile(int index)
+		{
+			_currentStorage = _storages[index];
 		}
 	}
 }

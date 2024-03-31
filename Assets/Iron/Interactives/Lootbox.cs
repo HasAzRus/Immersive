@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Iron
 {
 	[Serializable]
-	public class Loot : Oxygen.Item
+	public class Loot : Oxygen.SerializeItem
 	{
 		[SerializeField] [Range(0f, 1f)] private float _dropProbability;
 

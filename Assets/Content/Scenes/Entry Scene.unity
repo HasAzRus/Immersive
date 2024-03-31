@@ -131,7 +131,7 @@ PrefabInstance:
     - target: {fileID: 1063914939808786373, guid: 39ea2a45f0fd00d4594a85342dca754a,
         type: 3}
       propertyPath: m_Name
-      value: Starter
+      value: Bootstrap
       objectReference: {fileID: 0}
     - target: {fileID: 8412140671668515570, guid: 39ea2a45f0fd00d4594a85342dca754a,
         type: 3}

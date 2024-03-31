@@ -24,7 +24,7 @@ namespace Oxygen.Editor
 			{
 				if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
 				{
-					var path = _target.GetPath();
+					var path = _target.Path;
 					
 					try
 					{

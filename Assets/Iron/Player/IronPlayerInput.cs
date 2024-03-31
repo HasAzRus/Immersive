@@ -131,6 +131,11 @@ namespace Iron
             {
                 ToggleInventory(ironPlayer);
             }
+
+            if (Input.GetKeyDown(KeyCode.P))
+            {
+                SaveLoad.Save(true);
+            }
         }
 
         private void Reload(IronPlayer ironPlayer)

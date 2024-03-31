@@ -8,11 +8,6 @@ namespace Oxygen
 	{
 		[SerializeField] private string _name;
 		[SerializeField] private string _path;
-		
-		public string GetPath()
-		{
-			return _path;
-		}
 
 		public void SetName(string value)
 		{
@@ -25,5 +20,6 @@ namespace Oxygen
 		}
 
 		public string Name => _name;
+		public string Path => _path;
 	}
 }

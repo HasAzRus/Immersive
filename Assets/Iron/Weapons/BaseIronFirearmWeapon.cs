@@ -1,12 +1,15 @@
 ﻿using Iron;
+using Oxygen;
 using UnityEngine;
 
-namespace Oxygen
+namespace Iron
 {
     public class BaseIronFirearmWeapon : BaseTraceFirearmWeapon
     {
         [SerializeField] private float _aimFieldOfView;
         [SerializeField] private string _ammoItemName;
+
+        [SerializeField] private GameObject _bulletHolePrefab;
 
         private IronPlayerMotor _playerMotor;
         private FirstPersonCamera _playerCamera;
@@ -14,13 +17,8 @@ namespace Oxygen
         protected override void OnConstruction(Character owner)
         {
             base.OnConstruction(owner);
-
-            if (owner is not Player player)
-            {
-                return;
-            }
-
-            if (player is not IronPlayer ironPlayer)
+            
+            if (owner is not IronPlayer ironPlayer)
             {
                 return;
             }
@@ -34,6 +32,17 @@ namespace Oxygen
             {
                 _playerCamera = firstPersonCamera;
             }
+        }
+
+        protected override void OnTraced(RaycastHit hit)
+        {
+            base.OnTraced(hit);
+
+            var position = hit.point;
+            var rotation = Quaternion.LookRotation(hit.normal);
+
+            var hole = Instantiate(_bulletHolePrefab, position, rotation);
+            hole.transform.parent = hit.transform;
         }
 
         protected override void OnImpacting(FireImpact impact)

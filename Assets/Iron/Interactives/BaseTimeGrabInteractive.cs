@@ -41,14 +41,11 @@ namespace Iron
             OnTimeInteractionFailed(ironPlayer);
         }
 
-        public float GetMaxTime()
-        {
-            return _maxTime;
-        }
-
         public void StopTimeInteraction()
         {
             _isFinished = true;
         }
+        
+        public float MaxTime => _maxTime;
     }
 }

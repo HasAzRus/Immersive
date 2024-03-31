@@ -63,7 +63,7 @@ namespace Iron
             _weaponManager.Construct(this);
 
             _flashlight = GetComponent<IronPlayerFlashlight>();
-            
+
             if (Motor is not IronPlayerMotor ironPlayerMotor)
             {
                 return;
@@ -82,19 +82,45 @@ namespace Iron
         protected override void OnGameBeginned()
         {
             base.OnGameBeginned();
-            
-            _weaponManager.ChangeWeapon(1);
 
-            if (_weaponManager.CurrentWeapon is BaseFirearmWeapon firearmWeapon)
-            {
-                firearmWeapon.Reload(32);
-            }
-            
             SetMode(PlayerMode.None);
-            
-            _flashlight.FillEnergy();
         }
-        
+
+        protected override void OnEnable()
+        {
+            base.OnEnable();
+            
+            SaveLoad.Saving += OnGameSaving;
+            SaveLoad.Loading += OnGameLoading;
+        }
+
+        private void OnGameLoading(IReadableStorage storage)
+        {
+            var data = IronPlayerSaveLoad.Load(storage);
+            
+            WritableHealth.Apply(data.Health);
+            _stamina.Apply(data.Stamina);
+            _flashlight.AddEnergy(data.Energy);
+
+            foreach (var item in data.Items)
+            {
+                _inventory.Place(item);
+            }
+        }
+
+        private void OnGameSaving(IWritableStorage storage)
+        {
+            var data = new IronPlayerData()
+            {
+                Health = ReadableHealth.Value,
+                Stamina = Stamina.Value,
+                Energy = _flashlight.ReadableEnergy.Value,
+                Items = _inventory.GetItems()
+            };
+            
+            IronPlayerSaveLoad.Save(storage, data);
+        }
+
         private void OnModeChanged(PlayerMode value)
         {
             Input.SetMode(value == PlayerMode.Inventory ? InputMode.UI : InputMode.Game);
@@ -129,6 +155,8 @@ namespace Iron
                 return;
             }
             
+            Debug.Log($"Упал с высоты: {height}");
+            
             ApplyDamage(gameObject, (height - _deadlyHeight) * _fallenDamageAmount);
         }
 
@@ -159,7 +187,7 @@ namespace Iron
             _isTimingToInteract = true;
 
             _timeToInteract = 0f;
-            _maxTimeToInteract = timeGrabInteractive.GetMaxTime();
+            _maxTimeToInteract = timeGrabInteractive.MaxTime;
 
             TimeGrabInteractive = timeGrabInteractive;
         }
@@ -175,23 +203,6 @@ namespace Iron
             }
 
             TimeGrabInteractive = null;
-        }
-
-        protected override void OnDestroy()
-        {
-            base.OnDestroy();
-            
-            if (Motor is not IronPlayerMotor ironPlayerMotor)
-            {
-                return;
-            }
-            
-            ironPlayerMotor.Crouched -= OnCrouched;
-            ironPlayerMotor.Uncrouched -= OnUncrouched;
-
-            ironPlayerMotor.Jumping -= OnJumping;
-            
-            ironPlayerMotor.Fallen -= OnFallen;
         }
 
         protected override void Update()
@@ -340,7 +351,45 @@ namespace Iron
         {
             _flashlight.AddEnergy(amount);
         }
+
+        public bool GiveWeapon(int index)
+        {
+            if (_weaponManager.CheckWeaponActive(index))
+            {
+                return false;
+            }
+            
+            _weaponManager.SetWeaponActive(index, true);
+            _weaponManager.ChangeWeapon(index);
+
+            return true;
+        }
+
+        protected override void OnDisable()
+        {
+            base.OnDisable();
+            
+            SaveLoad.Saving -= OnGameSaving;
+            SaveLoad.Loading -= OnGameLoading;
+        }
         
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+            
+            if (Motor is not IronPlayerMotor ironPlayerMotor)
+            {
+                return;
+            }
+            
+            ironPlayerMotor.Crouched -= OnCrouched;
+            ironPlayerMotor.Uncrouched -= OnUncrouched;
+
+            ironPlayerMotor.Jumping -= OnJumping;
+            
+            ironPlayerMotor.Fallen -= OnFallen;
+        }
+
         public IReadableInventory Inventory => _inventory;
         public IReadableWeaponManager WeaponManager => _weaponManager;
         public IReadableStamina Stamina => _stamina;

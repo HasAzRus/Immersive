@@ -95,7 +95,7 @@ namespace Iron
             }
 
             _timeGrabbingCrosshairImage.fillAmount =
-                MathF.Round(value / _ironPlayer.TimeGrabInteractive.GetMaxTime(), 2);
+                MathF.Round(value / _ironPlayer.TimeGrabInteractive.MaxTime, 2);
         }
 
         private void OnInteractionStopped()

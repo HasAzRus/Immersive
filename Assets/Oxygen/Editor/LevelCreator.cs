@@ -37,14 +37,14 @@ namespace Oxygen.Editor
 		{
 			var buildScenes = EditorBuildSettings.scenes;
 
-			if (buildScenes.Any(buildScene => buildScene.path == level.GetPath()))
+			if (buildScenes.Any(buildScene => buildScene.path == level.Path))
 			{
 				Debug.LogError($"Данная сцена ({level.Name}) уже занесена в список Build");
 				
 				return;
 			}
 
-			var editorBuildSettingsScene = new EditorBuildSettingsScene(level.GetPath(), true);
+			var editorBuildSettingsScene = new EditorBuildSettingsScene(level.Path, true);
 			var scenes = new EditorBuildSettingsScene[buildScenes.Length + 1];
 
 			for (var i = 0; i < buildScenes.Length; i++)
